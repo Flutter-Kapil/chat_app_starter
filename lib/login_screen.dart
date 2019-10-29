@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -6,10 +7,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  String userEmail;
+  String userPassword;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(
@@ -57,19 +59,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: 'elon@musk.com',
                         icon: Icon(Icons.email),
                         border: OutlineInputBorder()),
+                    onChanged: (value) {
+                      userEmail = value;
+                    },
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   TextField(
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        icon: Icon(Icons.lock),
-                        hintText: 'spacexRocks',
-                        border: OutlineInputBorder()),
-                  ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.lock),
+                          hintText: 'spacexRocks',
+                          border: OutlineInputBorder()),
+                      onChanged: (value) {
+                        userPassword = value;
+                      }),
                   SizedBox(
                     height: 20,
                   ),
@@ -82,8 +89,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(color: Colors.white, fontSize: 21),
                     ),
                     color: Colors.blue,
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'chat');
+                    onPressed: () async {
+                      AuthResult result = await FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: userEmail, password: userPassword);
+                      print(result);
+//                      Navigator.pushNamed(context, 'chat');
                     },
                   ),
                 ],

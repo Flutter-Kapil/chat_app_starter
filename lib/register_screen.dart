@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
+
+String email;
+String password;
 
 class _RegisterScreenState extends State<RegisterScreen> {
   @override
@@ -56,6 +60,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         hintText: 'elon@musk.com',
                         icon: Icon(Icons.email),
                         border: OutlineInputBorder()),
+                    onChanged: (value) {
+                      email = value;
+                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -68,6 +75,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         icon: Icon(Icons.lock),
                         hintText: 'spacexRocks',
                         border: OutlineInputBorder()),
+                    onChanged: (value) {
+                      password = value;
+                    },
                   ),
                   SizedBox(
                     height: 20,
@@ -81,8 +91,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style: TextStyle(color: Colors.white, fontSize: 21),
                     ),
                     color: Colors.purple,
-                    onPressed: () {
-                      Navigator.pushNamed(context, 'register');
+                    onPressed: () async {
+                      try {
+                        AuthResult result = await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: email, password: password);
+                        if (result.user != null) {
+                          Navigator.pushNamed(context, 'login');
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
                     },
                   ),
                 ],
