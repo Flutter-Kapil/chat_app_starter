@@ -9,6 +9,7 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final myController = TextEditingController();
+  List<Widget> chatWidgets = [];
 
   @override
   void initState() {
@@ -25,7 +26,8 @@ class _ChatScreenState extends State<ChatScreen> {
     for (DocumentSnapshot message in messages.documents) {
       String text = message.data['text'];
       String sender = message.data['sender'];
-      print('$text from $sender');
+//      print('$text from $sender');
+      chatWidgets.add(Text('$text from $sender'));
     }
   }
 
@@ -54,11 +56,11 @@ class _ChatScreenState extends State<ChatScreen> {
         child: Column(
           children: <Widget>[
             Expanded(
-              flex: 8,
-              child: Container(
-                child: ListView.builder(itemBuilder: null),
-              ),
-            ),
+                flex: 8,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: chatWidgets,
+                )),
             Expanded(
               flex: 1,
               child: Row(
