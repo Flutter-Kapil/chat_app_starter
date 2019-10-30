@@ -63,11 +63,12 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: SafeArea(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
                 flex: 8,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: chatWidgets,
                 )),
             Expanded(
@@ -131,14 +132,28 @@ class chatBubble extends StatelessWidget {
   chatBubble({this.text, this.sender, this.color});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.centerRight,
-      margin: EdgeInsets.only(top: 6, bottom: 6),
-      decoration: BoxDecoration(color: color),
-      child: Text(
-        "$text from $sender",
-        style: TextStyle(fontSize: 16),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Text(
+          sender,
+          style: TextStyle(color: Colors.grey),
+        ),
+        Container(
+          padding: EdgeInsets.only(right: 8),
+//          alignment: Alignment.centerRight,
+          margin: EdgeInsets.only(top: 6, bottom: 6),
+          decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              )),
+          child: Text(
+            text,
+            style: TextStyle(fontSize: 19),
+          ),
+        ),
+      ],
     );
   }
 }
