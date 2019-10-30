@@ -46,7 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
       chatWidgets.add(chatBubble(
         text: text,
         sender: sender,
-        color: sender == currentUserEmail ? Colors.blue : Colors.yellow,
+        color: sender == currentUserEmail ? Color(0xFF1E88E5) : Colors.white,
         rowAlignment: sender == currentUserEmail
             ? MainAxisAlignment.end
             : MainAxisAlignment.start,
@@ -63,6 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chat'),
+        centerTitle: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.verified_user),
@@ -86,48 +87,38 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
-                flex: 8,
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: chatWidgets,
-                  ),
-                )),
-            Expanded(
-              flex: 1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    height: 40,
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    child: TextField(
-                      expands: false,
-                      decoration: new InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1.0),
-                        ),
-                      ),
-                      controller: myController,
-                      autocorrect: false,
-                      autofocus: true,
-                      showCursor: true,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.send),
-                    disabledColor: Colors.grey,
-                    color: Colors.blue,
-                    onPressed: myController.text.isEmpty ? null : sendMessage,
-                  ),
-                ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: chatWidgets,
               ),
+            )),
+            Divider(
+              color: Colors.blue,
+              height: 2,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: TextField(
+                    expands: false,
+                    controller: myController,
+                    autocorrect: false,
+                    autofocus: false,
+                    showCursor: false,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  disabledColor: Colors.grey,
+                  color: Colors.blue,
+                  onPressed: myController.text.isEmpty ? null : sendMessage,
+                ),
+              ],
             ),
           ],
         ),
@@ -183,7 +174,7 @@ class chatBubble extends StatelessWidget {
                   child: Text(
                     text,
                     style: TextStyle(
-                      fontSize: 19,
+                      fontSize: 18,
                     ),
                     softWrap: true,
                   ),
