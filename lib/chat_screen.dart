@@ -19,6 +19,14 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
+  void getMessages() async {
+    QuerySnapshot messages =
+        await Firestore.instance.collection('messages').getDocuments();
+    for (int i = 0; i < messages.documents.length; i++) {
+      print(messages.documents.elementAt(i).data);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +42,9 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           IconButton(
             icon: Icon(Icons.cloud_download),
-            onPressed: () {},
+            onPressed: () {
+              getMessages();
+            },
           ),
         ],
       ),
