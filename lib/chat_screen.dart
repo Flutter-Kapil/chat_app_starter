@@ -62,8 +62,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-            RaisedButton(
-              child: Text('Send'),
+            IconButton(
+              icon: Icon(Icons.send),
               disabledColor: Colors.grey,
               color: Colors.blue,
               onPressed: myController.text.isEmpty ? null : sendMessage,
