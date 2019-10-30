@@ -87,9 +87,11 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Expanded(
                 flex: 8,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: chatWidgets,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: chatWidgets,
+                  ),
                 )),
             Expanded(
               flex: 1,
