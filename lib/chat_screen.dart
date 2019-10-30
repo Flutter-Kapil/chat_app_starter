@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -8,6 +9,16 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final myController = TextEditingController();
+
+  @override
+  void initState() {
+    myController.addListener(() {
+      setState(() {});
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.verified_user),
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.pushNamed(context, '/');
+              Navigator.pushReplacementNamed(context, '/');
             },
           ),
           IconButton(
@@ -53,13 +64,21 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             RaisedButton(
               child: Text('Send'),
-              onPressed: () {
-                print(myController.text);
-              },
+              disabledColor: Colors.grey,
+              color: Colors.blue,
+              onPressed: myController.text.isEmpty ? null : sendMessage,
             )
           ],
         ),
       ),
     );
+  }
+
+  void sendMessage() async {
+    print(myController.text);
+    await Firestore.instance
+        .collection('messages')
+        .add({'sender': 'kapil@gmail.com', 'text': myController.text});
+    myController.clear();
   }
 }
