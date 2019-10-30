@@ -22,8 +22,10 @@ class _ChatScreenState extends State<ChatScreen> {
   void getMessages() async {
     QuerySnapshot messages =
         await Firestore.instance.collection('messages').getDocuments();
-    for (int i = 0; i < messages.documents.length; i++) {
-      print(messages.documents.elementAt(i).data);
+    for (DocumentSnapshot message in messages.documents) {
+      String text = message.data['text'];
+      String sender = message.data['sender'];
+      print('$text from $sender');
     }
   }
 
@@ -49,35 +51,50 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
       body: SafeArea(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Column(
           children: <Widget>[
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: TextField(
-                expands: false,
-                decoration: new InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1.0),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1.0),
-                  ),
-                ),
-                controller: myController,
-                autocorrect: false,
-                autofocus: true,
-                showCursor: true,
-                textAlign: TextAlign.center,
+            Expanded(
+              flex: 8,
+              child: Container(
+                child: ListView.builder(itemBuilder: null),
               ),
             ),
-            IconButton(
-              icon: Icon(Icons.send),
-              disabledColor: Colors.grey,
-              color: Colors.blue,
-              onPressed: myController.text.isEmpty ? null : sendMessage,
-            )
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: TextField(
+                      expands: false,
+                      decoration: new InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 1.0),
+                        ),
+                      ),
+                      controller: myController,
+                      autocorrect: false,
+                      autofocus: true,
+                      showCursor: true,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    disabledColor: Colors.grey,
+                    color: Colors.blue,
+                    onPressed: myController.text.isEmpty ? null : sendMessage,
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
