@@ -20,14 +20,21 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
 
-  void getMessages() async {
+  Future getMessages() async {
     QuerySnapshot messages =
         await Firestore.instance.collection('messages').getDocuments();
+//now lets also fetch current user email id
+    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+    String currentUserEmail = currentUser.email;
     for (DocumentSnapshot message in messages.documents) {
       String text = message.data['text'];
       String sender = message.data['sender'];
 //      print('$text from $sender');
-      chatWidgets.add(Text('$text from $sender'));
+      chatWidgets.add(chatBubble(
+        text: text,
+        sender: sender,
+        color: sender == currentUserEmail ? Colors.blue : Colors.yellow,
+      ));
     }
   }
 
@@ -46,8 +53,10 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           IconButton(
             icon: Icon(Icons.cloud_download),
-            onPressed: () {
-              getMessages();
+            onPressed: () async {
+              chatWidgets.clear();
+              await getMessages();
+              setState(() {});
             },
           ),
         ],
@@ -93,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     disabledColor: Colors.grey,
                     color: Colors.blue,
                     onPressed: myController.text.isEmpty ? null : sendMessage,
-                  )
+                  ),
                 ],
               ),
             ),
@@ -105,9 +114,31 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void sendMessage() async {
     print(myController.text);
+    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+    String currentUserEmail = currentUser.email;
     await Firestore.instance
         .collection('messages')
-        .add({'sender': 'kapil@gmail.com', 'text': myController.text});
+        .add({'sender': currentUserEmail, 'text': myController.text});
     myController.clear();
+  }
+}
+
+class chatBubble extends StatelessWidget {
+  String text;
+  String sender;
+  Color color;
+
+  chatBubble({this.text, this.sender, this.color});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerRight,
+      margin: EdgeInsets.only(top: 6, bottom: 6),
+      decoration: BoxDecoration(color: color),
+      child: Text(
+        "$text from $sender",
+        style: TextStyle(fontSize: 16),
+      ),
+    );
   }
 }
