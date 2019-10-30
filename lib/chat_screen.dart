@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
+
+ShapeBorder shapeMe = RoundedRectangleBorder(
+    borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(15.0),
+        bottomRight: Radius.circular(15.0),
+        topLeft: Radius.circular(15.0)));
+
+ShapeBorder shapeOthers = RoundedRectangleBorder(
+    borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(15.0),
+        bottomRight: Radius.circular(15.0),
+        topRight: Radius.circular(15.0)));
 
 class _ChatScreenState extends State<ChatScreen> {
   final myController = TextEditingController();
@@ -34,6 +47,13 @@ class _ChatScreenState extends State<ChatScreen> {
         text: text,
         sender: sender,
         color: sender == currentUserEmail ? Colors.blue : Colors.yellow,
+        rowAlignment: sender == currentUserEmail
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
+        colAlignment: sender == currentUserEmail
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
+        shape: sender == currentUserEmail ? shapeMe : shapeOthers,
       ));
     }
   }
@@ -128,32 +148,49 @@ class chatBubble extends StatelessWidget {
   String text;
   String sender;
   Color color;
-
-  chatBubble({this.text, this.sender, this.color});
+  MainAxisAlignment rowAlignment;
+  CrossAxisAlignment colAlignment;
+  ShapeBorder shape;
+  chatBubble(
+      {this.text,
+      this.sender,
+      this.color,
+      this.rowAlignment,
+      this.colAlignment,
+      this.shape});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-        Text(
-          sender,
-          style: TextStyle(color: Colors.grey),
-        ),
-        Container(
-          padding: EdgeInsets.only(right: 8),
-//          alignment: Alignment.centerRight,
-          margin: EdgeInsets.only(top: 6, bottom: 6),
-          decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.all(
-                Radius.circular(8.0),
-              )),
-          child: Text(
-            text,
-            style: TextStyle(fontSize: 19),
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Row(
+        mainAxisAlignment: rowAlignment,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: colAlignment,
+            children: <Widget>[
+              Text(
+                sender,
+                style: TextStyle(color: Colors.grey),
+              ),
+              Material(
+                color: color,
+                elevation: 5,
+                shape: shape,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      fontSize: 19,
+                    ),
+                    softWrap: true,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
