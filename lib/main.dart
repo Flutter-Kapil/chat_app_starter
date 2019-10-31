@@ -1,4 +1,5 @@
 import 'package:chat_app_starter/register_screen.dart';
+import 'package:chat_app_starter/rooms_page.dart';
 import 'package:flutter/material.dart';
 import 'chat_screen.dart';
 import 'login_screen.dart';
@@ -12,6 +13,7 @@ void main() {
         'login': (context) => LoginScreen(),
         'register': (context) => RegisterScreen(),
         'chat': (context) => ChatScreen(),
+        'rooms':(context)=>RoomsScreen(),
       },
     ),
   );
