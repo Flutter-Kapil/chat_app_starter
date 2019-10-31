@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
 class chatBubble extends StatelessWidget {
+  ShapeBorder shapeMe = RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(15.0),
+          bottomRight: Radius.circular(15.0),
+          topLeft: Radius.circular(15.0)));
+
+  ShapeBorder shapeOthers = RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(15.0),
+          bottomRight: Radius.circular(15.0),
+          topRight: Radius.circular(15.0)));
   String text;
   String sender;
   Color color;
@@ -21,19 +32,22 @@ class chatBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Row(
-        mainAxisAlignment: rowAlignment,
+        mainAxisAlignment:
+            isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
           Column(
-            crossAxisAlignment: colAlignment,
+            crossAxisAlignment: isCurrentUser
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
             children: <Widget>[
               Text(
                 sender,
                 style: TextStyle(color: Colors.grey),
               ),
               Material(
-                color: color,
+                color: isCurrentUser ? Color(0xFF1E88E5) : Colors.white,
                 elevation: 5,
-                shape: shape,
+                shape: isCurrentUser ? shapeMe : shapeOthers,
                 child: Container(
                   padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
                   child: Text(

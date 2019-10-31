@@ -10,18 +10,6 @@ class ChatScreen extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-ShapeBorder shapeMe = RoundedRectangleBorder(
-    borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(15.0),
-        bottomRight: Radius.circular(15.0),
-        topLeft: Radius.circular(15.0)));
-
-ShapeBorder shapeOthers = RoundedRectangleBorder(
-    borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(15.0),
-        bottomRight: Radius.circular(15.0),
-        topRight: Radius.circular(15.0)));
-
 class _ChatScreenState extends State<ChatScreen> {
   FirebaseUser currentUser;
   bool isCurrentUserBool;
@@ -70,7 +58,10 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             Expanded(
               child: StreamBuilder(
-                stream: Firestore.instance.collection('messages').snapshots(),
+                stream: Firestore.instance
+                    .collection('messages')
+                    .orderBy('time')
+                    .snapshots(),
                 builder: (BuildContext context, snapshot) {
                   if (!snapshot.hasData) {
                     return CircularProgressIndicator();
@@ -82,30 +73,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             text: snapshot.data.documents[index].data['text'],
                             sender:
                                 snapshot.data.documents[index].data['sender'],
-
-                            //TODO: implement  isCurrentUser bool
                             isCurrentUser: currentUser.email ==
                                 snapshot.data.documents[index].data['sender'],
-                            color: currentUser.email ==
-                                    snapshot
-                                        .data.documents[index].data['sender']
-                                ? Color(0xFF1E88E5)
-                                : Colors.white,
-                            rowAlignment: currentUser.email ==
-                                    snapshot
-                                        .data.documents[index].data['sender']
-                                ? MainAxisAlignment.end
-                                : MainAxisAlignment.start,
-                            colAlignment: currentUser.email ==
-                                    snapshot
-                                        .data.documents[index].data['sender']
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
-                            shape: currentUser.email ==
-                                    snapshot
-                                        .data.documents[index].data['sender']
-                                ? shapeMe
-                                : shapeOthers,
                           );
                         });
                   } else if (snapshot.hasError)
@@ -162,8 +131,7 @@ class _ChatScreenState extends State<ChatScreen> {
     myController.clear();
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     String currentUserEmail = currentUser.email;
-    await Firestore.instance
-        .collection('messages')
-        .add({'sender': currentUserEmail, 'text': temp});
+    await Firestore.instance.collection('messages').add(
+        {'sender': currentUserEmail, 'text': temp, 'time': DateTime.now()});
   }
 }
