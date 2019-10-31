@@ -43,13 +43,6 @@ class _ChatScreenState extends State<ChatScreen> {
               Navigator.pushReplacementNamed(context, '/');
             },
           ),
-          IconButton(
-            icon: Icon(Icons.cloud_download),
-            onPressed: () async {
-              chatWidgets.clear();
-              setState(() {});
-            },
-          ),
         ],
       ),
       body: SafeArea(
