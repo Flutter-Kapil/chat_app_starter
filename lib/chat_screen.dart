@@ -29,7 +29,8 @@ class _ChatScreenState extends State<ChatScreen> {
     myController.addListener(() {
       setState(() {});
     });
-    // TODO: implement initState
+    getMessages();
+    getMessageStream();
     super.initState();
   }
 
@@ -55,6 +56,32 @@ class _ChatScreenState extends State<ChatScreen> {
             : CrossAxisAlignment.start,
         shape: sender == currentUserEmail ? shapeMe : shapeOthers,
       ));
+    }
+  }
+
+  void getMessageStream() async {
+    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+    String currentUserEmail = currentUser.email;
+    await for (var snapshot
+        in Firestore.instance.collection('messages').snapshots()) {
+      for (var message in snapshot.documents) {
+        String text = message.data['text'];
+        String sender = message.data['sender'];
+        print('$text by $sender');
+
+        chatWidgets.add(chatBubble(
+          text: text,
+          sender: sender,
+          color: sender == currentUserEmail ? Color(0xFF1E88E5) : Colors.white,
+          rowAlignment: sender == currentUserEmail
+              ? MainAxisAlignment.end
+              : MainAxisAlignment.start,
+          colAlignment: sender == currentUserEmail
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+          shape: sender == currentUserEmail ? shapeMe : shapeOthers,
+        ));
+      }
     }
   }
 
