@@ -48,7 +48,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
             RaisedButton(
               child: Text('Create New Room'),
               onPressed: () {
-                Firestore.instance.collection('rooms').add({'roomID': '005'});
+                Firestore.instance.collection('rooms').add({'roomID': '008'});
               },
             ),
             Row(
@@ -67,15 +67,11 @@ class _RoomsScreenState extends State<RoomsScreen> {
                   onPressed: () async {
                     QuerySnapshot y = await Firestore.instance
                         .collection('rooms')
-                        .where('roomID')
                         .getDocuments();
-
-                    var x = await Firestore.instance
-                        .collection('rooms')
-                        .where('roomID')
-                        .getDocuments();
-                    print(x.runtimeType);
-                    print(y.documents.last.data);
+                    print('-----------');
+                    print(y.documents
+                        .firstWhere((x) => x.data.containsValue(6))
+                        .data);
                   },
                 )
               ],
