@@ -5,10 +5,8 @@ class RoomsScreen extends StatefulWidget {
   _RoomsScreenState createState() => _RoomsScreenState();
 }
 
-
 class _RoomsScreenState extends State<RoomsScreen> {
   //variables for RoomsScreen
-
 
   //init state
   @override

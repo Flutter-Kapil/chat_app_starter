@@ -13,7 +13,7 @@ void main() {
         'login': (context) => LoginScreen(),
         'register': (context) => RegisterScreen(),
         'chat': (context) => ChatScreen(),
-        'rooms':(context)=>RoomsScreen(),
+        'rooms': (context) => RoomsScreen(),
       },
     ),
   );
