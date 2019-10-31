@@ -128,12 +128,45 @@ class _ChatScreenState extends State<ChatScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
-                child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: chatWidgets,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    StreamBuilder(
+                      stream:
+                          Firestore.instance.collection('messages').snapshots(),
+                      builder: (BuildContext context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasData) {
+                          return Column(
+                            children: chatWidgets,
+                          );
+                        } else if (snapshot.hasError)
+                          return Text('Error: ${snapshot.error}');
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text('Select lot');
+                          case ConnectionState.waiting:
+                            return Text('Awaiting bids...');
+                          case ConnectionState.active:
+                            return Text('\$${snapshot.data}');
+                          case ConnectionState.done:
+                            return Text('\$${snapshot.data} (closed)');
+                        }
+                        return null; // unreachable
+                      },
+                    )
+                  ],
+                ),
               ),
-            )),
+            ),
+//            Expanded(
+//                child: SingleChildScrollView(
+//              child: Column(
+//                crossAxisAlignment: CrossAxisAlignment.end,
+//                children: chatWidgets,
+//              ),
+//            )),
             Divider(
               color: Colors.blue,
               height: 2,
