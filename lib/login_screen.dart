@@ -101,8 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             .signInWithEmailAndPassword(
                                 email: userEmail, password: userPassword);
                         print(result.user.email == userEmail);
-                        print(result.user.providerId == userPassword);
                         print('here now');
+                        setState(() {
+                          _saving = false;
+                        });
                         Navigator.pushNamed(context, 'chat');
                       },
                     ),

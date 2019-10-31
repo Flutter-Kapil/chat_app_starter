@@ -7,7 +7,7 @@ import 'login_screen.dart';
 void main() {
   runApp(
     MaterialApp(
-      initialRoute: '/',
+      initialRoute: 'rooms',
       routes: {
         '/': (context) => WelcomeScreen(),
         'login': (context) => LoginScreen(),
