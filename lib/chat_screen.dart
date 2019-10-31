@@ -26,6 +26,18 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
+//    bool isCurrentUser() async {
+//      QuerySnapshot messages =
+//      await Firestore.instance.collection('messages').getDocuments();
+//      FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+//      String currentUserEmail = currentUser.email;
+//      for (DocumentSnapshot message in messages.documents) {
+//        String sender = message.data['sender'];
+//        return sender == currentUserEmail;
+//      }
+//
+//    }
+
     myController.addListener(() {
       setState(() {});
     });
@@ -64,6 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
     String currentUserEmail = currentUser.email;
     await for (var snapshot
         in Firestore.instance.collection('messages').snapshots()) {
+      chatWidgets.clear();
       for (var message in snapshot.documents) {
         String text = message.data['text'];
         String sender = message.data['sender'];
@@ -82,6 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
           shape: sender == currentUserEmail ? shapeMe : shapeOthers,
         ));
       }
+      setState(() {});
     }
   }
 
