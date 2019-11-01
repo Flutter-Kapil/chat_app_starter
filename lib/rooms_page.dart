@@ -71,9 +71,11 @@ class _RoomsScreenState extends State<RoomsScreen> {
 //                        .getDocuments();
 //                    print('-----------');
 //                    print(y.documents);
-                    print(rooms
-                        .document('123')
-                        .setData({'fromFlutterAppTest': 'hello'}));
+                    rooms.document('0002').collection('messages').add({
+                      'senderEmail': 'kapil@gmail.com',
+                      'text': 'sample text',
+                      'time': DateTime.now()
+                    });
                   },
                 )
               ],
