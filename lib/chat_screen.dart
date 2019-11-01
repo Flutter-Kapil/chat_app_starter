@@ -126,14 +126,12 @@ class _ChatScreenState extends State<ChatScreen> {
     myController.clear();
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     String currentUserEmail = currentUser.email;
+    print(currentUserEmail);
     await Firestore.instance
         .collection('rooms')
         .document('0002')
         .collection('messages')
-        .add({
-      'sender': 'kapil@gmail.com',
-      'text': myController.text,
-      'time': DateTime.now()
-    });
+        .add(
+            {'sender': currentUserEmail, 'text': temp, 'time': DateTime.now()});
   }
 }
