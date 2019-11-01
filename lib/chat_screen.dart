@@ -52,6 +52,8 @@ class _ChatScreenState extends State<ChatScreen> {
             Expanded(
               child: StreamBuilder(
                 stream: Firestore.instance
+                    .collection('rooms')
+                    .document('0002')
                     .collection('messages')
                     .orderBy('time')
                     .snapshots(),
@@ -124,7 +126,14 @@ class _ChatScreenState extends State<ChatScreen> {
     myController.clear();
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     String currentUserEmail = currentUser.email;
-    await Firestore.instance.collection('messages').add(
-        {'sender': currentUserEmail, 'text': temp, 'time': DateTime.now()});
+    await Firestore.instance
+        .collection('rooms')
+        .document('0002')
+        .collection('messages')
+        .add({
+      'sender': 'kapil@gmail.com',
+      'text': myController.text,
+      'time': DateTime.now()
+    });
   }
 }

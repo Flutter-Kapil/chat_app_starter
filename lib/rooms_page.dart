@@ -7,6 +7,8 @@ class RoomsScreen extends StatefulWidget {
   _RoomsScreenState createState() => _RoomsScreenState();
 }
 
+String joinRoomId = '';
+
 class _RoomsScreenState extends State<RoomsScreen> {
   //variables for RoomsScreen
   FirebaseUser currentUser;
@@ -43,6 +45,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 ),
                 RaisedButton(
                   child: Text('Join Room'),
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'chat');
+                  },
                 ),
               ],
             ),
