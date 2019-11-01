@@ -2,6 +2,7 @@ import 'package:chat_app_starter/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:math';
 
 class RoomsScreen extends StatefulWidget {
   @override
@@ -18,6 +19,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
   @override
   void initState() {
     // TODO: implement initState
+    roomIdController.addListener(() {
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -32,7 +36,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
       child: Scaffold(
         backgroundColor: Colors.blueAccent,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -43,6 +47,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     controller: roomIdController,
                   ),
                 ),
+                // join room button
                 RaisedButton(
                   child: Text('Join Room'),
                   //TODO: add room id from controller value
@@ -60,40 +65,18 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 ),
               ],
             ),
+            // create new room button
             RaisedButton(
               child: Text('Create New Room'),
               onPressed: () {
-                Firestore.instance.collection('rooms').add({'roomID': '008'});
+                int randomNumber = 1111 + Random().nextInt(888);
+                roomId = randomNumber.toString();
+                Navigator.push(
+                    (context),
+                    MaterialPageRoute(
+                        builder: (context) => ChatScreen(roomId)));
               },
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                FlatButton(
-                  color: Colors.purple,
-                  child: Text('Log in'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'login');
-                  },
-                ),
-                FlatButton(
-                  child: Text('test button'),
-                  color: Colors.purple,
-                  onPressed: () async {
-//                    QuerySnapshot y = await Firestore.instance
-//                        .collection('rooms')
-//                        .getDocuments();
-//                    print('-----------');
-//                    print(y.documents);
-                    rooms.document('0002').collection('messages').add({
-                      'senderEmail': 'kapil@gmail.com',
-                      'text': 'sample text',
-                      'time': DateTime.now()
-                    });
-                  },
-                )
-              ],
-            )
           ],
         ),
       ),

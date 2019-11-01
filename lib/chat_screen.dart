@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat'),
+        title: Text('Room ${widget.roomId}'),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
