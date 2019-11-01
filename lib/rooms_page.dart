@@ -10,6 +10,7 @@ class RoomsScreen extends StatefulWidget {
 }
 
 class _RoomsScreenState extends State<RoomsScreen> {
+  List roomsList = [];
   //variables for RoomsScreen
   FirebaseUser currentUser;
   final roomIdController = TextEditingController();
@@ -22,6 +23,16 @@ class _RoomsScreenState extends State<RoomsScreen> {
       setState(() {});
     });
     super.initState();
+  }
+
+  Future getRoomsList() async {
+    QuerySnapshot rooms =
+        await Firestore.instance.collection('rooms').getDocuments();
+//TODO: list of rooms method 2
+    for (DocumentSnapshot roomID in rooms.documents) {
+      roomsList.add(roomID.documentID);
+    }
+    print(roomsList);
   }
 
   Future getCurrentUser() async {
@@ -131,7 +142,8 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 onPressed: () {
 //                  print(Firestore.instance.collection('rooms'));
 //                  print(Firestore.instance.collection('rooms'));
-                  print(Firestore.instance.collection('rooms'));
+//                  print(Firestore.instance.collection('rooms'));
+                  getRoomsList();
                 },
               ),
             ),
