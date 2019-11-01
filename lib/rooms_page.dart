@@ -136,17 +136,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
 //            SizedBox(
 //              height: 10,
 //            ),
-            Container(
-              child: FlatButton(
-                child: Text('Test: Rooms List'),
-                onPressed: () {
-//                  print(Firestore.instance.collection('rooms'));
-//                  print(Firestore.instance.collection('rooms'));
-//                  print(Firestore.instance.collection('rooms'));
-                  getRoomsList();
-                },
-              ),
-            ),
           ],
         ),
       ),
