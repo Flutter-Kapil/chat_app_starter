@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           _saving = false;
                         });
-                        Navigator.pushNamed(context, 'chat');
+                        Navigator.pushNamed(context, 'rooms');
                       },
                     ),
                   ],
