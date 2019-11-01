@@ -6,6 +6,9 @@ import 'package:flutter/widgets.dart';
 import 'chat_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
+  final String roomId;
+  ChatScreen(this.roomId);
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -53,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: StreamBuilder(
                 stream: Firestore.instance
                     .collection('rooms')
-                    .document('0002')
+                    .document(widget.roomId)
                     .collection('messages')
                     .orderBy('time')
                     .snapshots(),
@@ -129,7 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
     print(currentUserEmail);
     await Firestore.instance
         .collection('rooms')
-        .document('0002')
+        .document(widget.roomId)
         .collection('messages')
         .add(
             {'sender': currentUserEmail, 'text': temp, 'time': DateTime.now()});

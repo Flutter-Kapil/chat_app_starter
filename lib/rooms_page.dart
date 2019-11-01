@@ -1,3 +1,4 @@
+import 'package:chat_app_starter/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,13 +8,12 @@ class RoomsScreen extends StatefulWidget {
   _RoomsScreenState createState() => _RoomsScreenState();
 }
 
-String joinRoomId = '';
-
 class _RoomsScreenState extends State<RoomsScreen> {
   //variables for RoomsScreen
   FirebaseUser currentUser;
   final roomIdController = TextEditingController();
   CollectionReference rooms = Firestore.instance.collection('rooms');
+  String roomId;
   //init state
   @override
   void initState() {
@@ -45,9 +45,18 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 ),
                 RaisedButton(
                   child: Text('Join Room'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'chat');
-                  },
+                  //TODO: add room id from controller value
+                  onPressed: roomIdController.text.isEmpty
+                      ? null
+                      : () {
+                          String tempRoomId = roomIdController.text;
+                          roomIdController.clear();
+                          roomId = tempRoomId;
+                          Navigator.push(
+                              (context),
+                              MaterialPageRoute(
+                                  builder: (context) => ChatScreen(roomId)));
+                        },
                 ),
               ],
             ),
