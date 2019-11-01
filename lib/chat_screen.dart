@@ -63,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     .snapshots(),
                 builder: (BuildContext context, snapshot) {
                   if (!snapshot.hasData) {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData) {
                     return ListView.builder(
                         itemCount: snapshot.data.documents.length,

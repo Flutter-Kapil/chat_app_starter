@@ -48,12 +48,13 @@ class _RoomsScreenState extends State<RoomsScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            SingleChildScrollView(
+            Expanded(
+              flex: 7,
               child: StreamBuilder<QuerySnapshot>(
                 stream: Firestore.instance.collection('rooms').snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   } else {
                     return ListView.builder(
                       itemBuilder: (context, index) {
@@ -92,46 +93,69 @@ class _RoomsScreenState extends State<RoomsScreen> {
 //            SizedBox(
 //              height: 10,
 //            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: TextField(
-                    controller: roomIdController,
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: TextField(
+                      controller: roomIdController,
+                    ),
                   ),
-                ),
-                // join room button
-                RaisedButton(
-                  child: Text('Join Room'),
-                  onPressed: roomIdController.text.isEmpty
-                      ? null
-                      : () {
-                          String tempRoomId = roomIdController.text;
-                          roomIdController.clear();
-                          roomId = tempRoomId;
-                          Navigator.push(
-                              (context),
-                              MaterialPageRoute(
-                                  builder: (context) => ChatScreen(roomId)));
-                        },
-                ),
-              ],
+                  // join room button
+                  RaisedButton(
+                    child: Text('Join Room'),
+                    onPressed: roomIdController.text.isEmpty
+                        ? null
+                        : () async {
+                            String tempRoomId = roomIdController.text;
+                            roomIdController.clear();
+                            roomId = tempRoomId;
+                            roomsList = [];
+                            await getRoomsList();
+                            if (roomsList.contains(roomId)) {
+                              Navigator.push(
+                                  (context),
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChatScreen(roomId)));
+                            } else {
+                              print('No room by such ID. please try again');
+                            }
+                          },
+                  ),
+                ],
+              ),
             ),
 //            SizedBox(
 //              height: 10,
 //            ),
             // create new room button
-            RaisedButton(
-              child: Text('Create New Room'),
-              onPressed: () {
-                int randomNumber = 1111 + Random().nextInt(888);
-                roomId = randomNumber.toString();
-                Navigator.push(
-                    (context),
-                    MaterialPageRoute(
-                        builder: (context) => ChatScreen(roomId)));
-              },
+            Expanded(
+              flex: 1,
+              child: RaisedButton(
+                color: Colors.purple,
+                elevation: 5,
+                child: Text('Create New Room'),
+                onPressed: () async {
+                  int randomNumber = 1111 + Random().nextInt(888);
+                  roomId = randomNumber.toString();
+                  if (roomsList.contains(roomId)) {
+                    print("current Room Id already exits, try again");
+                  } else {
+                    Firestore.instance
+                        .collection('rooms')
+                        .document(roomId)
+                        .setData({'roomID': roomId, 'time': DateTime.now()});
+                    Navigator.push(
+                        (context),
+                        MaterialPageRoute(
+                            builder: (context) => ChatScreen(roomId)));
+                  }
+                },
+              ),
             ),
 //            SizedBox(
 //              height: 10,
