@@ -14,6 +14,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  List roomsList = [];
   FirebaseUser currentUser;
   bool isCurrentUserBool;
   final myController = TextEditingController();

@@ -35,8 +35,52 @@ class _RoomsScreenState extends State<RoomsScreen> {
       child: Scaffold(
         backgroundColor: Colors.blueAccent,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            SingleChildScrollView(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance.collection('rooms').snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  } else {
+                    return ListView.builder(
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: EdgeInsets.fromLTRB(16, 2, 16, 0),
+                          child: RaisedButton(
+                              onPressed: () async {
+                                Firestore.instance
+                                    .collection('rooms')
+                                    .document(
+                                        '${snapshot.data.documents[index].documentID}')
+                                    .collection('messages');
+                                Navigator.push(
+                                    (context),
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                            snapshot.data.documents[index]
+                                                .documentID)));
+                              },
+                              child: Text(
+                                snapshot.data.documents[index].documentID,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                              color: Colors.lightGreen),
+                        );
+                      },
+                      itemCount: snapshot.data.documents.length,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                    );
+                  }
+                },
+              ),
+            ),
+//            SizedBox(
+//              height: 10,
+//            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -63,6 +107,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 ),
               ],
             ),
+//            SizedBox(
+//              height: 10,
+//            ),
             // create new room button
             RaisedButton(
               child: Text('Create New Room'),
@@ -74,6 +121,19 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     MaterialPageRoute(
                         builder: (context) => ChatScreen(roomId)));
               },
+            ),
+//            SizedBox(
+//              height: 10,
+//            ),
+            Container(
+              child: FlatButton(
+                child: Text('Test: Rooms List'),
+                onPressed: () {
+//                  print(Firestore.instance.collection('rooms'));
+//                  print(Firestore.instance.collection('rooms'));
+                  print(Firestore.instance.collection('rooms'));
+                },
+              ),
             ),
           ],
         ),
