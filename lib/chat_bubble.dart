@@ -1,32 +1,21 @@
 import 'package:flutter/material.dart';
 
-class chatBubble extends StatelessWidget {
-  ShapeBorder shapeMe = RoundedRectangleBorder(
+class ChatBubble extends StatelessWidget {
+  final ShapeBorder shapeMe = RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(15.0),
           bottomRight: Radius.circular(15.0),
           topLeft: Radius.circular(15.0)));
 
-  ShapeBorder shapeOthers = RoundedRectangleBorder(
+  final ShapeBorder shapeOthers = RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(15.0),
           bottomRight: Radius.circular(15.0),
           topRight: Radius.circular(15.0)));
-  String text;
-  String sender;
-  Color color;
-  MainAxisAlignment rowAlignment;
-  CrossAxisAlignment colAlignment;
-  ShapeBorder shape;
-  bool isCurrentUser;
-  chatBubble(
-      {this.text,
-      this.sender,
-      this.color,
-      this.rowAlignment,
-      this.colAlignment,
-      this.shape,
-      this.isCurrentUser});
+  final String text;
+  final String sender;
+  final bool isCurrentUser;
+  ChatBubble({this.text, this.sender, this.isCurrentUser});
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -67,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     return ListView.builder(
                         itemCount: snapshot.data.documents.length,
                         itemBuilder: (context, int index) {
-                          return chatBubble(
+                          return ChatBubble(
                             text: snapshot.data.documents[index].data['text'],
                             sender:
                                 snapshot.data.documents[index].data['sender'],

@@ -18,7 +18,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
   //init state
   @override
   void initState() {
-    // TODO: implement initState
     roomIdController.addListener(() {
       setState(() {});
     });
@@ -50,7 +49,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 // join room button
                 RaisedButton(
                   child: Text('Join Room'),
-                  //TODO: add room id from controller value
                   onPressed: roomIdController.text.isEmpty
                       ? null
                       : () {
