@@ -11,6 +11,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
   //variables for RoomsScreen
   FirebaseUser currentUser;
   final roomIdController = TextEditingController();
+  CollectionReference rooms = Firestore.instance.collection('rooms');
   //init state
   @override
   void initState() {
@@ -65,13 +66,14 @@ class _RoomsScreenState extends State<RoomsScreen> {
                   child: Text('test button'),
                   color: Colors.purple,
                   onPressed: () async {
-                    QuerySnapshot y = await Firestore.instance
-                        .collection('rooms')
-                        .getDocuments();
-                    print('-----------');
-                    print(y.documents
-                        .firstWhere((x) => x.data.containsValue(6))
-                        .data);
+//                    QuerySnapshot y = await Firestore.instance
+//                        .collection('rooms')
+//                        .getDocuments();
+//                    print('-----------');
+//                    print(y.documents);
+                    print(rooms
+                        .document('123')
+                        .setData({'fromFlutterAppTest': 'hello'}));
                   },
                 )
               ],
