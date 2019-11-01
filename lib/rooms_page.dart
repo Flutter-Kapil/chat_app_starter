@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RoomsScreen extends StatefulWidget {
   @override
@@ -44,9 +45,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.blueAccent,
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Expanded(
               flex: 7,
@@ -57,10 +56,14 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     return Center(child: CircularProgressIndicator());
                   } else {
                     return ListView.builder(
+                      padding: EdgeInsets.only(top: 15),
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: EdgeInsets.fromLTRB(16, 2, 16, 0),
+                          padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
                           child: RaisedButton(
+                              padding: EdgeInsets.symmetric(),
+                              shape: BeveledRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
                               onPressed: () async {
                                 Firestore.instance
                                     .collection('rooms')
@@ -79,7 +82,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
-                              color: Colors.lightGreen),
+                              color: Colors.blueAccent),
                         );
                       },
                       itemCount: snapshot.data.documents.length,
@@ -94,7 +97,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
 //              height: 10,
 //            ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -106,6 +109,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                   ),
                   // join room button
                   RaisedButton(
+                    disabledColor: Colors.grey,
                     child: Text('Join Room'),
                     onPressed: roomIdController.text.isEmpty
                         ? null
@@ -114,6 +118,10 @@ class _RoomsScreenState extends State<RoomsScreen> {
                             roomIdController.clear();
                             roomId = tempRoomId;
                             roomsList = [];
+
+                            Scaffold.of(context).showSnackBar(new SnackBar(
+                              content: new Text("Sending Message"),
+                            ));
                             await getRoomsList();
                             if (roomsList.contains(roomId)) {
                               Navigator.push(
@@ -122,52 +130,56 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                       builder: (context) =>
                                           ChatScreen(roomId)));
                             } else {
-                              print('No room by such ID. please try again');
+                              Fluttertoast.showToast(
+                                  msg: "No room by such ID. please try again",
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIos: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
                             }
                           },
                   ),
                 ],
               ),
             ),
-//            SizedBox(
-//              height: 10,
-//            ),
+
             // create new room button
             Expanded(
               flex: 1,
-              child: RaisedButton(
-                color: Colors.purple,
-                elevation: 5,
-                child: Text('Create New Room'),
-                onPressed: () async {
-                  int randomNumber = 1111 + Random().nextInt(888);
-                  roomId = randomNumber.toString();
-                  if (roomsList.contains(roomId)) {
-                    print("current Room Id already exits, try again");
-                  } else {
-                    Firestore.instance
-                        .collection('rooms')
-                        .document(roomId)
-                        .setData({'roomID': roomId, 'time': DateTime.now()});
-                    Navigator.push(
-                        (context),
-                        MaterialPageRoute(
-                            builder: (context) => ChatScreen(roomId)));
-                  }
-                },
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: RaisedButton(
+                  color: Colors.deepPurpleAccent,
+                  textColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0)),
+                  elevation: 8,
+                  highlightElevation: 10.0,
+                  child: Text('Create New Room'),
+                  onPressed: () async {
+                    int randomNumber = 1111 + Random().nextInt(888);
+                    roomId = randomNumber.toString();
+                    if (roomsList.contains(roomId)) {
+                      print("current Room Id already exits, try again");
+                    } else {
+                      Firestore.instance
+                          .collection('rooms')
+                          .document(roomId)
+                          .setData({'roomID': roomId, 'time': DateTime.now()});
+                      Navigator.push(
+                          (context),
+                          MaterialPageRoute(
+                              builder: (context) => ChatScreen(roomId)));
+                    }
+                  },
+                ),
               ),
             ),
-//            SizedBox(
-//              height: 10,
-//            ),
           ],
         ),
       ),
     );
   }
-
-//  void sendMessageTOSubCollection() async {
-//    String temp = 'test01 sending message to subcollection ';
-//    await Firestore.instance.collection('rooms').;
-//  }
 }
