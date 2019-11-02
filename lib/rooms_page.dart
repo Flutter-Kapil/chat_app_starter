@@ -27,6 +27,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
   }
 
   Future getRoomsList() async {
+    roomsList = [];
     QuerySnapshot rooms =
         await Firestore.instance.collection('rooms').getDocuments();
 //TODO: list of rooms method 2
@@ -117,7 +118,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
                             String tempRoomId = roomIdController.text;
                             roomIdController.clear();
                             roomId = tempRoomId;
-                            roomsList = [];
 
                             Scaffold.of(context).showSnackBar(new SnackBar(
                               content: new Text("Sending Message"),
