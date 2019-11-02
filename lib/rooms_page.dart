@@ -59,31 +59,31 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     return ListView.builder(
                       padding: EdgeInsets.only(top: 15),
                       itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.all(8),
-                          color: Colors.blue,
-                          child: ListTile(
-                            dense: true,
-                            enabled: true,
-                            onTap: () async {
-                              Firestore.instance
-                                  .collection('rooms')
-                                  .document(
-                                      '${snapshot.data.documents[index].documentID}')
-                                  .collection('messages');
-                              Navigator.push(
-                                  (context),
-                                  MaterialPageRoute(
-                                      builder: (context) => ChatScreen(snapshot
-                                          .data.documents[index].documentID)));
-                            },
-                            leading: Icon(Icons.bookmark),
-                            title: Text(
-                              snapshot.data.documents[index].documentID,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16),
-                            ),
-                          ),
+                        return Padding(
+                          padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
+                          child: RaisedButton(
+                              padding: EdgeInsets.symmetric(),
+                              shape: BeveledRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              onPressed: () async {
+                                Firestore.instance
+                                    .collection('rooms')
+                                    .document(
+                                        '${snapshot.data.documents[index].documentID}')
+                                    .collection('messages');
+                                Navigator.push(
+                                    (context),
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                            snapshot.data.documents[index]
+                                                .documentID)));
+                              },
+                              child: Text(
+                                snapshot.data.documents[index].documentID,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                              color: Colors.blueAccent),
                         );
                       },
                       itemCount: snapshot.data.documents.length,
