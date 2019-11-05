@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -13,6 +14,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String userPassword;
   @override
   Widget build(BuildContext context) {
+    final _showToast =
+        (x) => Fluttertoast.showToast(msg: x, toastLength: Toast.LENGTH_SHORT);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(18.0),
@@ -95,17 +98,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       color: Colors.blue,
                       onPressed: () async {
+                      try{
                         _saving = true;
                         setState(() {});
                         AuthResult result = await FirebaseAuth.instance
                             .signInWithEmailAndPassword(
-                                email: userEmail, password: userPassword);
+                            email: userEmail, password: userPassword);
                         print(result.user.email == userEmail);
                         print('here now');
                         setState(() {
                           _saving = false;
                         });
                         Navigator.pushNamed(context, 'rooms');
+                      }catch(e){
+                        print('catching error');
+                        print(e);
+                        setState(() {
+                          _saving=false;
+                        });
+                        _showToast('Incorrect email id or password');
+                      }
                       },
                     ),
                   ],
