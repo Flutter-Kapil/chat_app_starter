@@ -44,6 +44,8 @@ class _RoomsScreenState extends State<RoomsScreen> {
   //RoomsScreen build method
   @override
   Widget build(BuildContext context) {
+    final _showToast =
+        (x) => Fluttertoast.showToast(msg: x, toastLength: Toast.LENGTH_SHORT);
     return SafeArea(
       child: Scaffold(
         body: Column(
@@ -115,13 +117,13 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     onPressed: roomIdController.text.isEmpty
                         ? null
                         : () async {
+                      print('here now 1');
                             String tempRoomId = roomIdController.text;
                             roomIdController.clear();
                             roomId = tempRoomId;
+//TODO: fix joining room
+                            print('trying to join room $roomId');
 
-                            Scaffold.of(context).showSnackBar(new SnackBar(
-                              content: new Text("Sending Message"),
-                            ));
                             await getRoomsList();
                             if (roomsList.contains(roomId)) {
                               Navigator.push(
@@ -130,14 +132,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                       builder: (context) =>
                                           ChatScreen(roomId)));
                             } else {
-                              Fluttertoast.showToast(
-                                  msg: "No room by such ID. please try again",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIos: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
+                              _showToast("no such Room id, Please try again");
                             }
                           },
                   ),
@@ -163,6 +158,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     roomId = randomNumber.toString();
                     if (roomsList.contains(roomId)) {
                       print("current Room Id already exits, try again");
+                      _showToast("current Room Id already exits, try again");
                     } else {
                       Firestore.instance
                           .collection('rooms')
