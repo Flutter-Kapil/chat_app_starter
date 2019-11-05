@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -24,31 +25,39 @@ class ChatBubble extends StatelessWidget {
         mainAxisAlignment:
             isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
-          Column(
-            crossAxisAlignment: isCurrentUser
-                ? CrossAxisAlignment.end
-                : CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                sender,
-                style: TextStyle(color: Colors.grey),
-              ),
-              Material(
-                color: isCurrentUser ? Color(0xFF1E88E5) : Colors.white,
-                elevation: 5,
-                shape: isCurrentUser ? shapeMe : shapeOthers,
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                      fontSize: 18,
+          Flexible(
+            child: Column(
+              crossAxisAlignment: isCurrentUser
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  sender,
+                  style: TextStyle(color: Colors.grey),
+                ),
+                Material(
+                  color: isCurrentUser ? Color(0xFF1E88E5) : Colors.white,
+                  elevation: 5,
+                  shape: isCurrentUser ? shapeMe : shapeOthers,
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
+                    child: Wrap(
+                      children: <Widget>[
+                        Text(
+                          text,
+//                          textAlign: TextAlign.start,
+                          style: TextStyle(
+
+                            fontSize: 18,
+                          ),
+                          softWrap: true,
+                        ),
+                      ],
                     ),
-                    softWrap: true,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
