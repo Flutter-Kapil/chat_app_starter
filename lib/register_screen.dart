@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -10,6 +11,8 @@ String email;
 String password;
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _showToast =
+      (x) => Fluttertoast.showToast(msg: x, toastLength: Toast.LENGTH_SHORT);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Navigator.pushNamed(context, 'login');
                         }
                       } catch (e) {
+                        _showToast('email id already exists');
                         print(e);
                       }
                     },
