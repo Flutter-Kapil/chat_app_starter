@@ -1,5 +1,6 @@
 import 'package:chat_app_starter/register_screen.dart';
 import 'package:chat_app_starter/rooms_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
 
@@ -24,6 +25,16 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
+  @override
+  void initState() async {
+    var x = await FirebaseAuth.instance.currentUser();
+    if (x != null) {
+      Navigator.pushNamed(context, 'rooms');
+    }
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
