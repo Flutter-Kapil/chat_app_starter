@@ -33,12 +33,21 @@ class _ChatScreenState extends State<ChatScreen> {
     currentUser = await FirebaseAuth.instance.currentUser();
   }
 
+//  Future getRoomName(String roomId) async {
+//    print('get meassages called');
+//    QuerySnapshot messages =
+//        await Firestore.instance.collection('rooms').getDocuments();
+//    print(messages.documents.where((x) => x['id'] == roomId));
+//    return messages.documents[0]['name'];
+//  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: Text('Room ${widget.roomId}'),
+          leading: Text('name here'),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
