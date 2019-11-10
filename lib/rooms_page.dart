@@ -28,6 +28,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
 
   Future getRoomsList() async {
     roomsList = [];
+    await Firestore.instance.collection('rooms').getDocuments();
     QuerySnapshot rooms =
         await Firestore.instance.collection('rooms').getDocuments();
 //TODO: list of rooms method 2
@@ -40,6 +41,20 @@ class _RoomsScreenState extends State<RoomsScreen> {
   Future getCurrentUser() async {
     currentUser = await FirebaseAuth.instance.currentUser();
   }
+
+//  Future getRoomName(String roomId) async {
+//    var x = await Firestore.instance
+//        .collection('rooms')
+//        .document('1767')
+//        .;
+//    print(x);
+//    print('get meassages called');
+//    QuerySnapshot roomsList =
+//        await Firestore.instance.collection('rooms').getDocuments();
+//    roomsList.
+////    print(roomsList.);
+//    return roomsList.documents[0]['name'];
+//  }
 
   //RoomsScreen build method
   @override
@@ -80,10 +95,18 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                             snapshot.data.documents[index]
                                                 .documentID)));
                               },
-                              child: Text(
-                                snapshot.data.documents[index].documentID,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                              child: ListTile(
+                                title: Text(
+                                  snapshot.data.documents[index].documentID,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                                subtitle: snapshot.data.documents[index]
+                                            .data['name'] !=
+                                        null
+                                    ? Text(snapshot
+                                        .data.documents[index].data['name'])
+                                    : Text('No Name'),
                               ),
                               color: Colors.blueAccent),
                         );
@@ -117,7 +140,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                     onPressed: roomIdController.text.isEmpty
                         ? null
                         : () async {
-                      print('here now 1');
+                            print('here now 1');
                             String tempRoomId = roomIdController.text;
                             roomIdController.clear();
                             roomId = tempRoomId;
@@ -173,6 +196,12 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 ),
               ),
             ),
+//            RaisedButton(
+//              child: Text('test'),
+//              onPressed: () async {
+////                getRoomName(roomId);
+//              },
+//            )
           ],
         ),
       ),
