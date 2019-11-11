@@ -42,20 +42,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
     currentUser = await FirebaseAuth.instance.currentUser();
   }
 
-//  Future getRoomName(String roomId) async {
-//    var x = await Firestore.instance
-//        .collection('rooms')
-//        .document('1767')
-//        .;
-//    print(x);
-//    print('get meassages called');
-//    QuerySnapshot roomsList =
-//        await Firestore.instance.collection('rooms').getDocuments();
-//    roomsList.
-////    print(roomsList.);
-//    return roomsList.documents[0]['name'];
-//  }
-
   //RoomsScreen build method
   @override
   Widget build(BuildContext context) {
@@ -196,12 +182,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 ),
               ),
             ),
-//            RaisedButton(
-//              child: Text('test'),
-//              onPressed: () async {
-////                getRoomName(roomId);
-//              },
-//            )
           ],
         ),
       ),

@@ -19,13 +19,14 @@ class _ChatScreenState extends State<ChatScreen> {
   bool isCurrentUserBool;
   final myController = TextEditingController();
   List<Widget> chatWidgets = [];
-
+  String currentRoomName = '...';
   @override
   void initState() {
     myController.addListener(() {
       setState(() {});
     });
     getCurrentUser();
+    getRoomName(widget.roomId);
     super.initState();
   }
 
@@ -40,14 +41,21 @@ class _ChatScreenState extends State<ChatScreen> {
 //    print(messages.documents.where((x) => x['id'] == roomId));
 //    return messages.documents[0]['name'];
 //  }
+  getRoomName(String documentId) async {
+    DocumentSnapshot particularDocument =
+        await Firestore.instance.document('rooms/$documentId').get();
+//    print(await particularDocument['name']);
+    currentRoomName = await particularDocument['name'];
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Room ${widget.roomId}'),
-          leading: Text('name here'),
+          title: Text(currentRoomName),
+          leading: Text('${widget.roomId}'),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
@@ -129,6 +137,12 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ],
               ),
+              FlatButton(
+                child: Text('test'),
+                onPressed: () async {
+                  print(await getRoomName(widget.roomId));
+                },
+              )
             ],
           ),
         ),
