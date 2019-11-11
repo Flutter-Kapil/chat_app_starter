@@ -55,11 +55,10 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(currentRoomName),
-          leading: Text('${widget.roomId}'),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.verified_user),
+              icon: Icon(Icons.offline_bolt),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
                 Navigator.pushReplacementNamed(context, '/');
@@ -137,12 +136,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ],
               ),
-              FlatButton(
-                child: Text('test'),
-                onPressed: () async {
-                  print(await getRoomName(widget.roomId));
-                },
-              )
             ],
           ),
         ),

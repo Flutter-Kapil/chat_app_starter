@@ -49,6 +49,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
         (x) => Fluttertoast.showToast(msg: x, toastLength: Toast.LENGTH_SHORT);
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Chat Rooms'),
+        ),
         body: Column(
           children: <Widget>[
             Expanded(
@@ -64,11 +67,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
-                          child: RaisedButton(
-                              padding: EdgeInsets.symmetric(),
-                              shape: BeveledRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              onPressed: () async {
+                          child: Card(
+                            child: ListTile(
+                              onTap: () async {
                                 Firestore.instance
                                     .collection('rooms')
                                     .document(
@@ -81,20 +82,19 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                             snapshot.data.documents[index]
                                                 .documentID)));
                               },
-                              child: ListTile(
-                                title: Text(
-                                  snapshot.data.documents[index].documentID,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                                subtitle: snapshot.data.documents[index]
-                                            .data['name'] !=
-                                        null
-                                    ? Text(snapshot
-                                        .data.documents[index].data['name'])
-                                    : Text('No Name'),
+                              subtitle: Text(
+                                snapshot.data.documents[index].documentID,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
                               ),
-                              color: Colors.blueAccent),
+                              title:
+                                  snapshot.data.documents[index].data['name'] !=
+                                          null
+                                      ? Text(snapshot
+                                          .data.documents[index].data['name'])
+                                      : Text('No Name'),
+                            ),
+                          ),
                         );
                       },
                       itemCount: snapshot.data.documents.length,

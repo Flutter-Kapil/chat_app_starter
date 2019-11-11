@@ -26,11 +26,11 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
-  void initState() async {
-    var x = await FirebaseAuth.instance.currentUser();
-    if (x != null) {
-      Navigator.pushNamed(context, 'rooms');
-    }
+  void initState() {
+//    var x = await FirebaseAuth.instance.currentUser();
+//    if (x != null) {
+//      Navigator.pushNamed(context, 'rooms');
+//    }
     // TODO: implement initState
     super.initState();
   }
