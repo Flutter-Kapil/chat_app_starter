@@ -76,13 +76,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       .collection('rooms')
                       .document(widget.roomId)
                       .collection('messages')
-                      .orderBy('time')
+                      .orderBy('time', descending: true)
                       .snapshots(),
                   builder: (BuildContext context, snapshot) {
                     if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());
                     } else if (snapshot.hasData) {
                       return ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          reverse: true,
                           itemCount: snapshot.data.documents.length,
                           itemBuilder: (context, int index) {
                             return ChatBubble(
