@@ -54,7 +54,32 @@ class _ChatScreenState extends State<ChatScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(currentRoomName),
+          title: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
+                      currentRoomName,
+                      style: TextStyle(fontSize: 21),
+                    ),
+                    Text(
+                      widget.roomId,
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    )
+                  ],
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.white30,
+                  ),
+                )
+              ],
+            ),
+          ),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
