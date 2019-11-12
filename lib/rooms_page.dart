@@ -69,7 +69,11 @@ class _RoomsScreenState extends State<RoomsScreen> {
                           padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
                           child: Card(
                             child: ListTile(
-                              leading: Icon(Icons.group),
+                              trailing: Icon(Icons.arrow_forward_ios),
+                              leading: Icon(
+                                Icons.group,
+                                size: 35,
+                              ),
                               onTap: () async {
                                 Firestore.instance
                                     .collection('rooms')
@@ -122,7 +126,9 @@ class _RoomsScreenState extends State<RoomsScreen> {
                   ),
                   // join room button
                   RaisedButton(
-                    disabledColor: Colors.grey,
+                    disabledColor: Colors.blueGrey,
+                    color: Colors.deepPurpleAccent,
+                    textColor: Colors.white,
                     child: Text('Join Room'),
                     onPressed: roomIdController.text.isEmpty
                         ? null
