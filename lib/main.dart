@@ -7,6 +7,8 @@ import 'login_screen.dart';
 void main() {
   runApp(
     MaterialApp(
+      darkTheme:
+          ThemeData(primaryColor: Colors.blueGrey, canvasColor: Colors.white30),
       initialRoute: '/',
       routes: {
         '/': (context) => WelcomeScreen(),
@@ -27,12 +29,16 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
-//    var x = await FirebaseAuth.instance.currentUser();
-//    if (x != null) {
-//      Navigator.pushNamed(context, 'rooms');
-//    }
+    isUserLoggedIn();
     // TODO: implement initState
     super.initState();
+  }
+
+  isUserLoggedIn() async {
+    var x = await FirebaseAuth.instance.currentUser();
+    if (x != null) {
+      Navigator.pushNamed(context, 'rooms');
+    }
   }
 
   @override

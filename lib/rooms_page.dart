@@ -69,6 +69,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                           padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
                           child: Card(
                             child: ListTile(
+                              leading: Icon(Icons.group),
                               onTap: () async {
                                 Firestore.instance
                                     .collection('rooms')
