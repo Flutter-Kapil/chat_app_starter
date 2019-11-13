@@ -179,7 +179,11 @@ class _RoomsScreenState extends State<RoomsScreen> {
                       Firestore.instance
                           .collection('rooms')
                           .document(roomId)
-                          .setData({'roomID': roomId, 'time': DateTime.now()});
+                          .setData({
+                        'roomID': roomId,
+                        'time': DateTime.now(),
+                        'name': roomId
+                      });
                       Navigator.push(
                           (context),
                           MaterialPageRoute(
