@@ -47,7 +47,7 @@ class ChatBubble extends StatelessWidget {
                           text,
 //                          textAlign: TextAlign.start,
                           style: TextStyle(
-
+                            color: isCurrentUser ? Colors.white : Colors.black,
                             fontSize: 18,
                           ),
                           softWrap: true,
