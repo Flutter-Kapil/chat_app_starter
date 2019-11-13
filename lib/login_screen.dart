@@ -109,7 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             _saving = false;
                           });
-                          Navigator.pushReplacementNamed(context, 'rooms');
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              'rooms', (Route<dynamic> route) => false);
                         } catch (e) {
                           print('catching error');
                           print(e);
