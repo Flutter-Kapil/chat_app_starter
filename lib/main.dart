@@ -37,7 +37,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   isUserLoggedIn() async {
     var x = await FirebaseAuth.instance.currentUser();
     if (x != null) {
-      Navigator.pushNamed(context, 'rooms');
+      Navigator.pushReplacementNamed(context, 'rooms');
     }
   }
 

@@ -98,26 +98,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       color: Colors.blue,
                       onPressed: () async {
-                      try{
-                        _saving = true;
-                        setState(() {});
-                        AuthResult result = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                            email: userEmail, password: userPassword);
-                        print(result.user.email == userEmail);
-                        print('here now');
-                        setState(() {
-                          _saving = false;
-                        });
-                        Navigator.pushNamed(context, 'rooms');
-                      }catch(e){
-                        print('catching error');
-                        print(e);
-                        setState(() {
-                          _saving=false;
-                        });
-                        _showToast('Incorrect email id or password');
-                      }
+                        try {
+                          _saving = true;
+                          setState(() {});
+                          AuthResult result = await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: userEmail, password: userPassword);
+                          print(result.user.email == userEmail);
+                          print('here now');
+                          setState(() {
+                            _saving = false;
+                          });
+                          Navigator.pushReplacementNamed(context, 'rooms');
+                        } catch (e) {
+                          print('catching error');
+                          print(e);
+                          setState(() {
+                            _saving = false;
+                          });
+                          _showToast('Incorrect email id or password');
+                        }
                       },
                     ),
                   ],
