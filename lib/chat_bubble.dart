@@ -20,44 +20,43 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
       child: Row(
         mainAxisAlignment:
             isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: <Widget>[
-          Flexible(
-            child: Column(
-              crossAxisAlignment: isCurrentUser
-                  ? CrossAxisAlignment.end
-                  : CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  sender,
-                  style: TextStyle(color: Colors.grey),
-                ),
-                Material(
-                  color: isCurrentUser ? Color(0xFF1E88E5) : Colors.white,
-                  elevation: 5,
-                  shape: isCurrentUser ? shapeMe : shapeOthers,
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
-                    child: Wrap(
-                      children: <Widget>[
-                        Text(
-                          text,
+          Column(
+            crossAxisAlignment: isCurrentUser
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                sender,
+                style: TextStyle(color: Colors.grey),
+              ),
+              Material(
+                color: isCurrentUser ? Color(0xFF1E88E5) : Colors.white,
+                elevation: 5,
+                shape: isCurrentUser ? shapeMe : shapeOthers,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.8,
+                    ),
+                    child: Text(
+                      text,
 //                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: isCurrentUser ? Colors.white : Colors.black,
-                            fontSize: 18,
-                          ),
-                          softWrap: true,
-                        ),
-                      ],
+                      style: TextStyle(
+                        color: isCurrentUser ? Colors.white : Colors.black,
+                        fontSize: 18,
+                      ),
+                      softWrap: true,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
