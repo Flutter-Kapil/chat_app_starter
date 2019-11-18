@@ -76,7 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   icon: Icon(
                     Icons.edit,
                     color: Colors.white30,
-                  ),
+                  ), onPressed: () {},
                 )
               ],
             ),

@@ -52,114 +52,61 @@ class _RoomsScreenState extends State<RoomsScreen> {
         appBar: AppBar(
           title: Text('Chat Rooms'),
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 7,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection('rooms').snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
-                  } else {
-                    return ListView.builder(
-                      padding: EdgeInsets.only(top: 15),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
-                          child: Card(
-                            child: ListTile(
-                              trailing: Icon(Icons.arrow_forward_ios),
-                              leading: Icon(
-                                Icons.group,
-                                size: 35,
-                              ),
-                              onTap: () async {
-                                Firestore.instance
-                                    .collection('rooms')
-                                    .document(
-                                        '${snapshot.data.documents[index].documentID}')
-                                    .collection('messages');
-                                Navigator.push(
-                                    (context),
-                                    MaterialPageRoute(
-                                        builder: (context) => ChatScreen(
-                                            snapshot.data.documents[index]
-                                                .documentID)));
-                              },
-                              subtitle: Text(
-                                snapshot.data.documents[index].documentID,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 16),
-                              ),
-                              title:
-                                  snapshot.data.documents[index].data['name'] !=
-                                          null
-                                      ? Text(snapshot
-                                          .data.documents[index].data['name'])
-                                      : Text('No Name'),
-                            ),
-                          ),
-                        );
-                      },
-                      itemCount: snapshot.data.documents.length,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                    );
-                  }
-                },
-              ),
-            ),
-//            SizedBox(
-//              height: 10,
-//            ),
-            Expanded(
-              flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    child: TextField(
-                      controller: roomIdController,
+        body: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('rooms').snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return ListView.builder(
+                padding: EdgeInsets.only(top: 15),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
+                    child: Card(
+                      child: ListTile(
+                        trailing: Icon(Icons.arrow_forward_ios),
+                        leading: Icon(
+                          Icons.group,
+                          size: 35,
+                        ),
+                        onTap: () async {
+                          Firestore.instance
+                              .collection('rooms')
+                              .document(
+                                  '${snapshot.data.documents[index].documentID}')
+                              .collection('messages');
+                          Navigator.push(
+                              (context),
+                              MaterialPageRoute(
+                                  builder: (context) => ChatScreen(
+                                      snapshot.data.documents[index]
+                                          .documentID)));
+                        },
+                        subtitle: Text(
+                          snapshot.data.documents[index].documentID,
+                          style: TextStyle(
+                              color: Colors.black, fontSize: 16),
+                        ),
+                        title:
+                            snapshot.data.documents[index].data['name'] !=
+                                    null
+                                ? Text(snapshot
+                                    .data.documents[index].data['name'])
+                                : Text('No Name'),
+                      ),
                     ),
-                  ),
-                  // join room button
-                  RaisedButton(
-                    disabledColor: Colors.blueGrey,
-                    color: Colors.deepPurpleAccent,
-                    textColor: Colors.white,
-                    child: Text('Join Room'),
-                    onPressed: roomIdController.text.isEmpty
-                        ? null
-                        : () async {
-                            print('here now 1');
-                            String tempRoomId = roomIdController.text;
-                            roomIdController.clear();
-                            roomId = tempRoomId;
-//TODO: fix joining room
-                            print('trying to join room $roomId');
-
-                            await getRoomsList();
-                            if (roomsList.contains(roomId)) {
-                              Navigator.push(
-                                  (context),
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChatScreen(roomId)));
-                            } else {
-                              _showToast("no such Room id, Please try again");
-                            }
-                          },
-                  ),
-                ],
-              ),
-            ),
-
-            // create new room button
-          ],
+                  );
+                },
+                itemCount: snapshot.data.documents.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+              );
+            }
+          },
         ),
         floatingActionButton: FloatingActionButton(
+          tooltip: 'Join or Create New Room',
           child: Icon(Icons.add),
           onPressed: () {
             showDialog(
@@ -167,21 +114,23 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 builder: (BuildContext context) => SimpleDialog(
 //              title: Text('Join / Create Room'),
                       children: <Widget>[
-                        ListTile(title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Text('Create Room'),
-                            Spacer(),
-                            Icon(Icons.add),
-                          ],
-                        ),
-                          onTap: ()async {
-                          Navigator.pop(context);
+                        ListTile(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              Text('Create Room'),
+                              Spacer(),
+                              Icon(Icons.add),
+                            ],
+                          ),
+                          onTap: () async {
+                            Navigator.pop(context);
                             int randomNumber = 1111 + Random().nextInt(888);
                             roomId = randomNumber.toString();
                             if (roomsList.contains(roomId)) {
                               print("current Room Id already exits, try again");
-                              _showToast("current Room Id already exits, try again");
+                              _showToast(
+                                  "current Room Id already exits, try again");
                             } else {
                               Firestore.instance
                                   .collection('rooms')
@@ -194,18 +143,84 @@ class _RoomsScreenState extends State<RoomsScreen> {
                               Navigator.push(
                                   (context),
                                   MaterialPageRoute(
-                                      builder: (context) => ChatScreen(roomId)));
+                                      builder: (context) =>
+                                          ChatScreen(roomId)));
                             }
                           },
                         ),
-                        ListTile(title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            Text('Join'),
-                            Spacer(),
-                            Icon(Icons.merge_type),
-                          ],
-                        ),),
+                        ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Text('Join'),
+                                Spacer(),
+                                Icon(Icons.merge_type),
+                              ],
+                            ),
+                            onTap: () async {
+                              Navigator.pop(context);
+                              print('here now 1');
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title: TextField(
+                                          controller: roomIdController,
+                                        ),
+                                        content: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            RaisedButton(
+                                              child: Text('Join'),
+                                              onPressed:  roomIdController.text.isEmpty
+                                                  ? null
+                                                  :() async {
+                                                print('here now 1');
+                                                String tempRoomId =
+                                                    roomIdController.text;
+                                                roomIdController.clear();
+                                                roomId = tempRoomId;
+                                                print(
+                                                    'trying to join room $roomId');
+
+                                                await getRoomsList();
+                                                if (roomsList
+                                                    .contains(roomId)) {
+                                                  Navigator.pop(context);
+                                                  Navigator.push(
+                                                      (context),
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ChatScreen(
+                                                                  roomId)));
+                                                } else {
+                                                  _showToast(
+                                                      "no such Room id, Please try again");
+                                                }
+                                              },
+                                            )
+                                          ],
+                                        ),
+//              title: Text('Join / Create Room'),
+                                      ));
+                              //-------------------------
+//                          String tempRoomId = roomIdController.text;
+//                          roomIdController.clear();
+//                          roomId = tempRoomId;
+//                          print('trying to join room $roomId');
+//
+//                          await getRoomsList();
+//                          if (roomsList.contains(roomId)) {
+//                            Navigator.push(
+//                                (context),
+//                                MaterialPageRoute(
+//                                    builder: (context) =>
+//                                        ChatScreen(roomId)));
+//                          } else {
+//                            _showToast("no such Room id, Please try again");
+//                          }
+                            }),
                       ],
                     ));
 //            showDialog(
