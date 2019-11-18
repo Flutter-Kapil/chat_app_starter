@@ -157,43 +157,68 @@ class _RoomsScreenState extends State<RoomsScreen> {
             ),
 
             // create new room button
-            Expanded(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: RaisedButton(
-                  color: Colors.deepPurpleAccent,
-                  textColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
-                  elevation: 8,
-                  highlightElevation: 10.0,
-                  child: Text('Create New Room'),
-                  onPressed: () async {
-                    int randomNumber = 1111 + Random().nextInt(888);
-                    roomId = randomNumber.toString();
-                    if (roomsList.contains(roomId)) {
-                      print("current Room Id already exits, try again");
-                      _showToast("current Room Id already exits, try again");
-                    } else {
-                      Firestore.instance
-                          .collection('rooms')
-                          .document(roomId)
-                          .setData({
-                        'roomID': roomId,
-                        'time': DateTime.now(),
-                        'name': roomId
-                      });
-                      Navigator.push(
-                          (context),
-                          MaterialPageRoute(
-                              builder: (context) => ChatScreen(roomId)));
-                    }
-                  },
-                ),
-              ),
-            ),
           ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) => SimpleDialog(
+//              title: Text('Join / Create Room'),
+                      children: <Widget>[
+                        ListTile(title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text('Create Room'),
+                            Spacer(),
+                            Icon(Icons.add),
+                          ],
+                        ),
+                          onTap: ()async {
+                          Navigator.pop(context);
+                            int randomNumber = 1111 + Random().nextInt(888);
+                            roomId = randomNumber.toString();
+                            if (roomsList.contains(roomId)) {
+                              print("current Room Id already exits, try again");
+                              _showToast("current Room Id already exits, try again");
+                            } else {
+                              Firestore.instance
+                                  .collection('rooms')
+                                  .document(roomId)
+                                  .setData({
+                                'roomID': roomId,
+                                'time': DateTime.now(),
+                                'name': roomId
+                              });
+                              Navigator.push(
+                                  (context),
+                                  MaterialPageRoute(
+                                      builder: (context) => ChatScreen(roomId)));
+                            }
+                          },
+                        ),
+                        ListTile(title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text('Join'),
+                            Spacer(),
+                            Icon(Icons.merge_type),
+                          ],
+                        ),),
+                      ],
+                    ));
+//            showDialog(
+//                context: context,
+//                builder: (BuildContext context) => AlertDialog(
+//              title: Text('Join / Create Room'),
+//                  actions: <Widget>[
+//                    ListTile(title: Text('Create Room'),),
+//                    ListTile(title: Text('Join Room'),),
+//                  ],
+//
+//                ));
+          },
         ),
       ),
     );
