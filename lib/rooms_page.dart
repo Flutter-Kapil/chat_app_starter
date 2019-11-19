@@ -31,7 +31,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
     await Firestore.instance.collection('rooms').getDocuments();
     QuerySnapshot rooms =
         await Firestore.instance.collection('rooms').getDocuments();
-//TODO: list of rooms method 2
     for (DocumentSnapshot roomID in rooms.documents) {
       roomsList.add(roomID.documentID);
     }
@@ -112,7 +111,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) => SimpleDialog(
-//              title: Text('Join / Create Room'),
                       children: <Widget>[
                         ListTile(
                           title: Row(
@@ -173,9 +171,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                           children: <Widget>[
                                             RaisedButton(
                                               child: Text('Join'),
-                                              onPressed:  roomIdController.text.isEmpty
-                                                  ? null
-                                                  :() async {
+                                              onPressed:() async {
                                                 print('here now 1');
                                                 String tempRoomId =
                                                     roomIdController.text;
@@ -202,37 +198,11 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                             )
                                           ],
                                         ),
-//              title: Text('Join / Create Room'),
                                       ));
-                              //-------------------------
-//                          String tempRoomId = roomIdController.text;
-//                          roomIdController.clear();
-//                          roomId = tempRoomId;
-//                          print('trying to join room $roomId');
-//
-//                          await getRoomsList();
-//                          if (roomsList.contains(roomId)) {
-//                            Navigator.push(
-//                                (context),
-//                                MaterialPageRoute(
-//                                    builder: (context) =>
-//                                        ChatScreen(roomId)));
-//                          } else {
-//                            _showToast("no such Room id, Please try again");
-//                          }
                             }),
                       ],
                     ));
-//            showDialog(
-//                context: context,
-//                builder: (BuildContext context) => AlertDialog(
-//              title: Text('Join / Create Room'),
-//                  actions: <Widget>[
-//                    ListTile(title: Text('Create Room'),),
-//                    ListTile(title: Text('Join Room'),),
-//                  ],
-//
-//                ));
+
           },
         ),
       ),
