@@ -111,9 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               'rooms', (Route<dynamic> route) => false);
-                        } catch (e) {
-                          print('catching error');
-                          print(e);
+                        } catch (e) {                   
                           setState(() {
                             _saving = false;
                           });
