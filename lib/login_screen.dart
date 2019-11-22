@@ -117,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           setState(() {
                             _saving = false;
                           });
-                          _showToast('Incorrect email id or password');
+                          _showToast(e.message);
                         }
                       },
                     ),
