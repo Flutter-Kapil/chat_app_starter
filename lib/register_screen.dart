@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -15,6 +16,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       (x) => Fluttertoast.showToast(msg: x, toastLength: Toast.LENGTH_SHORT);
   @override
   Widget build(BuildContext context) {
+    var registerButtonAction = () async {
+      try {
+        AuthResult result = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        if (result.user != null) {
+          Navigator.popAndPushNamed(context, 'login');
+        }
+      } catch (e) {
+        _showToast(e.message);
+      }
+    };
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(18.0),
@@ -71,6 +84,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 20,
                   ),
                   TextField(
+                    onSubmitted: (password) {
+                      registerButtonAction();
+                    },
+                    onEditingComplete: registerButtonAction,
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     obscureText: true,
@@ -94,19 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       style: TextStyle(color: Colors.white, fontSize: 21),
                     ),
                     color: Colors.purple,
-                    onPressed: () async {
-                      try {
-                        AuthResult result = await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: email, password: password);
-                        if (result.user != null) {
-                          Navigator.pushNamed(context, 'login');
-                        }
-                      } catch (e) {
-                        _showToast('email id already exists');
-                        print(e);
-                      }
-                    },
+                    onPressed: registerButtonAction,
                   ),
                 ],
               ),
