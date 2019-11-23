@@ -15,12 +15,17 @@ class _RoomsScreenState extends State<RoomsScreen> {
   //variables for RoomsScreen
   FirebaseUser currentUser;
   final roomIdController = TextEditingController();
+  final roomNameController = TextEditingController();
   CollectionReference rooms = Firestore.instance.collection('rooms');
   String roomId;
+  String roomName;
   //init state
   @override
   void initState() {
     roomIdController.addListener(() {
+      setState(() {});
+    });
+    roomNameController.addListener(() {
       setState(() {});
     });
     super.initState();
@@ -78,21 +83,17 @@ class _RoomsScreenState extends State<RoomsScreen> {
                           Navigator.push(
                               (context),
                               MaterialPageRoute(
-                                  builder: (context) => ChatScreen(
-                                      snapshot.data.documents[index]
-                                          .documentID)));
+                                  builder: (context) => ChatScreen(snapshot
+                                      .data.documents[index].documentID)));
                         },
                         subtitle: Text(
-                          snapshot.data.documents[index].documentID,
-                          style: TextStyle(
-                              color: Colors.black, fontSize: 16),
+                          'ID:${snapshot.data.documents[index].documentID}',
+                          style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
-                        title:
-                            snapshot.data.documents[index].data['name'] !=
-                                    null
-                                ? Text(snapshot
-                                    .data.documents[index].data['name'])
-                                : Text('No Name'),
+                        title: snapshot.data.documents[index].data['name'] !=
+                                null
+                            ? Text(snapshot.data.documents[index].data['name'])
+                            : Text('No Name'),
                       ),
                     ),
                   );
@@ -122,6 +123,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                             ],
                           ),
                           onTap: () async {
+                            roomNameController.clear();
                             Navigator.pop(context);
                             int randomNumber = 1111 + Random().nextInt(888);
                             roomId = randomNumber.toString();
@@ -130,19 +132,54 @@ class _RoomsScreenState extends State<RoomsScreen> {
                               _showToast(
                                   "current Room Id already exits, try again");
                             } else {
-                              Firestore.instance
-                                  .collection('rooms')
-                                  .document(roomId)
-                                  .setData({
-                                'roomID': roomId,
-                                'time': DateTime.now(),
-                                'name': roomId
-                              });
-                              Navigator.push(
-                                  (context),
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          ChatScreen(roomId)));
+                              // create room button, randomly generated ID is new and doesn't already exist.
+                              //pop up asking user to given name to room
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+
+                                        title: TextField(
+                                          
+                                          controller: roomNameController,
+                                        ),
+                                        content: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: <Widget>[
+                                            RaisedButton(
+                                              child: Text('OK'),
+                                              onPressed: () async {
+                                                String tempRoomName =
+                                                    roomIdController.text;
+                                                    print('roomController tetx: ${roomNameController.text}');
+                                                // roomNameController.clear();
+                                                roomName = tempRoomName;
+                                                print(
+                                                    'trying to join room $roomId roomName ${roomNameController.text}');
+
+                                                Firestore.instance
+                                                    .collection('rooms')
+                                                    .document(roomId)
+                                                    .setData({
+                                                  'roomID': roomId,
+                                                  'time': DateTime.now(),
+                                                  'name': roomNameController.text
+                                                });
+                                                Navigator.pushReplacement(
+                                                    (context),
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ChatScreen(
+                                                                roomId)));
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      ));
+
+                              //after getting random roomID and roomName from user
+
                             }
                           },
                         ),
@@ -171,7 +208,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                           children: <Widget>[
                                             RaisedButton(
                                               child: Text('Join'),
-                                              onPressed:() async {
+                                              onPressed: () async {
                                                 print('here now 1');
                                                 String tempRoomId =
                                                     roomIdController.text;
@@ -202,7 +239,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
                             }),
                       ],
                     ));
-
           },
         ),
       ),
