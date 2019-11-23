@@ -88,7 +88,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                         },
                         subtitle: Text(
                           'ID:${snapshot.data.documents[index].documentID}',
-                          style: TextStyle(color: Colors.black, fontSize: 16),
+                          style: TextStyle(color: Colors.black38, fontSize: 16),
                         ),
                         title: snapshot.data.documents[index].data['name'] !=
                                 null
@@ -123,7 +123,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
                             ],
                           ),
                           onTap: () async {
-                            roomNameController.clear();
                             Navigator.pop(context);
                             int randomNumber = 1111 + Random().nextInt(888);
                             roomId = randomNumber.toString();
@@ -138,9 +137,10 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                   context: context,
                                   builder: (BuildContext context) =>
                                       AlertDialog(
-
+                                        
                                         title: TextField(
-                                          
+                                          showCursor: true,
+                                          decoration: InputDecoration(helperText: 'Enter Room Name'),
                                           controller: roomNameController,
                                         ),
                                         content: Row(
@@ -151,12 +151,13 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                               child: Text('OK'),
                                               onPressed: () async {
                                                 String tempRoomName =
-                                                    roomIdController.text;
+                                                    roomNameController.text;
+                                                    print('tempRoomName:$tempRoomName');
                                                     print('roomController tetx: ${roomNameController.text}');
-                                                // roomNameController.clear();
+                                                roomNameController.clear();
                                                 roomName = tempRoomName;
                                                 print(
-                                                    'trying to join room $roomId roomName ${roomNameController.text}');
+                                                    'trying to join room $roomId roomName $roomName');
 
                                                 Firestore.instance
                                                     .collection('rooms')
@@ -164,7 +165,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                                     .setData({
                                                   'roomID': roomId,
                                                   'time': DateTime.now(),
-                                                  'name': roomNameController.text
+                                                  'name': roomName
                                                 });
                                                 Navigator.pushReplacement(
                                                     (context),
