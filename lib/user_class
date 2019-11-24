@@ -1,0 +1,9 @@
+class user{
+    String email;
+    String name;
+    String id;
+    String photoUrl;
+    List<String> ownerOfGroups;
+    String status;
+    String aboutMe;
+}
