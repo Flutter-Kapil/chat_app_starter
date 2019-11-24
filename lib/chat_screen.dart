@@ -17,6 +17,7 @@ class _ChatScreenState extends State<ChatScreen> {
   List roomsList = [];
   FirebaseUser currentUser;
   bool isCurrentUserBool;
+  final editRoomNameController = TextEditingController();
   final myController = TextEditingController();
   List<Widget> chatWidgets = [];
   String currentRoomName = '...';
@@ -75,7 +76,39 @@ class _ChatScreenState extends State<ChatScreen> {
                   icon: Icon(
                     Icons.edit,
                     color: Colors.white30,
-                  ), onPressed: () {},
+                  ),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                              title: Text('Edit Room Name'),
+                              content: TextField(
+                                showCursor: true,
+                                controller: editRoomNameController,
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('OK'),
+                                  onPressed: () {
+                                    String tempRoomName =
+                                        editRoomNameController.text;
+                                    print('tempRoomName:$tempRoomName');
+                                    print(
+                                        'roomController tetx: ${editRoomNameController.text}');
+                                    editRoomNameController.clear();
+                                    Firestore.instance
+                                        .collection('rooms')
+                                        .document(widget.roomId)
+                                        .updateData({'name': tempRoomName});
+                                        Navigator.pop(context);
+                                        setState(() {
+                                          getRoomName(widget.roomId);
+                                        });
+                                  },
+                                )
+                              ],
+                            ));
+                  },
                 )
               ],
             ),
