@@ -140,44 +140,38 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                         title: Text('Enter Room Name'),
                                         content: TextField(
                                           showCursor: true,
-                                          
                                           controller: roomNameController,
                                         ),
                                         actions: <Widget>[
-                                          Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: <Widget>[
-                                            RaisedButton(
-                                              child: Text('OK'),
-                                              onPressed: () async {
-                                                String tempRoomName =
-                                                    roomNameController.text;
-                                                    print('tempRoomName:$tempRoomName');
-                                                    print('roomController tetx: ${roomNameController.text}');
-                                                roomNameController.clear();
-                                                roomName = tempRoomName;
-                                                print(
-                                                    'trying to join room $roomId roomName $roomName');
+                                          FlatButton(
+                                            child: Text('OK'),
+                                            onPressed: () async {
+                                              String tempRoomName =
+                                                  roomNameController.text;
+                                              print(
+                                                  'tempRoomName:$tempRoomName');
+                                              print(
+                                                  'roomController tetx: ${roomNameController.text}');
+                                              roomNameController.clear();
+                                              roomName = tempRoomName;
+                                              print(
+                                                  'trying to join room $roomId roomName $roomName');
 
-                                                Firestore.instance
-                                                    .collection('rooms')
-                                                    .document(roomId)
-                                                    .setData({
-                                                  'roomID': roomId,
-                                                  'time': DateTime.now(),
-                                                  'name': roomName
-                                                });
-                                                Navigator.pushReplacement(
-                                                    (context),
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ChatScreen(
-                                                                roomId)));
-                                              },
-                                            )
-                                          ],
-                                        )
+                                              Firestore.instance
+                                                  .collection('rooms')
+                                                  .document(roomId)
+                                                  .setData({
+                                                'roomID': roomId,
+                                                'time': DateTime.now(),
+                                                'name': roomName
+                                              });
+                                              Navigator.pushReplacement(
+                                                  (context),
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ChatScreen(roomId)));
+                                            },
+                                          )
                                         ],
                                       ));
 
@@ -202,42 +196,38 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                   context: context,
                                   builder: (BuildContext context) =>
                                       AlertDialog(
-                                        title: TextField(
+                                        title: Text('Enter Room ID'),
+                                        content: TextField(
                                           controller: roomIdController,
                                         ),
-                                        content: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: <Widget>[
-                                            RaisedButton(
-                                              child: Text('Join'),
-                                              onPressed: () async {
-                                                print('here now 1');
-                                                String tempRoomId =
-                                                    roomIdController.text;
-                                                roomIdController.clear();
-                                                roomId = tempRoomId;
-                                                print(
-                                                    'trying to join room $roomId');
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text('Join'),
+                                            onPressed: () async {
+                                              print('here now 1');
+                                              String tempRoomId =
+                                                  roomIdController.text;
+                                              roomIdController.clear();
+                                              roomId = tempRoomId;
+                                              print(
+                                                  'trying to join room $roomId');
 
-                                                await getRoomsList();
-                                                if (roomsList
-                                                    .contains(roomId)) {
-                                                  Navigator.pop(context);
-                                                  Navigator.push(
-                                                      (context),
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ChatScreen(
-                                                                  roomId)));
-                                                } else {
-                                                  _showToast(
-                                                      "no such Room id, Please try again");
-                                                }
-                                              },
-                                            )
-                                          ],
-                                        ),
+                                              await getRoomsList();
+                                              if (roomsList.contains(roomId)) {
+                                                Navigator.pop(context);
+                                                Navigator.push(
+                                                    (context),
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ChatScreen(
+                                                                roomId)));
+                                              } else {
+                                                _showToast(
+                                                    "no such Room id, Please try again");
+                                              }
+                                            },
+                                          )
+                                        ],
                                       ));
                             }),
                       ],
