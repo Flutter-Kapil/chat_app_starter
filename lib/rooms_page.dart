@@ -137,13 +137,14 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                   context: context,
                                   builder: (BuildContext context) =>
                                       AlertDialog(
-                                        
-                                        title: TextField(
+                                        title: Text('Enter Room Name'),
+                                        content: TextField(
                                           showCursor: true,
-                                          decoration: InputDecoration(helperText: 'Enter Room Name'),
+                                          
                                           controller: roomNameController,
                                         ),
-                                        content: Row(
+                                        actions: <Widget>[
+                                          Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: <Widget>[
@@ -176,7 +177,8 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                               },
                                             )
                                           ],
-                                        ),
+                                        )
+                                        ],
                                       ));
 
                               //after getting random roomID and roomName from user
