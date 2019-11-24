@@ -116,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.offline_bolt),
+              icon: Icon(Icons.power_settings_new),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
                 Navigator.of(context).pushNamedAndRemoveUntil(
