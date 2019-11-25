@@ -1,10 +1,7 @@
-import 'package:chat_app_starter/google_signIn.dart';
-import 'package:chat_app_starter/user_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,23 +10,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  GoogleSignIn googleSignIn = GoogleSignIn();
-  //-----------
-  UserDetails loggedInUser = UserDetails();
-  FirebaseUser user;
-  //------------------------
-  Future<FirebaseUser> signIn(BuildContext context) async {
-    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-    // FirebaseUser userDeatils= await firebaseAuth.signInWithCredential(credential);
-
-    // ProviderDetails providerInfo = ProviderDetails(userDetail.providerId);
-  }
-
   bool _saving = false;
   String userEmail;
   String userPassword;
@@ -133,43 +113,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      children: <Widget>[
-                        RaisedButton(
-                          padding: EdgeInsets.all(16),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12.0))),
-                          child: Text(
-                            'Login',
-                            style: TextStyle(color: Colors.white, fontSize: 21),
-                          ),
-                          color: Colors.blue,
-                          onPressed: loginButtonAction,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            try {
-                              signInWithGoogle().whenComplete(() {
-                                print('logged in ${loggedInUser.name}');
-                                Navigator.of(context).pushNamedAndRemoveUntil(
-                                    'rooms', (Route<dynamic> route) => false);
-                              });
-                            } catch (e) {
-                              print(e);
-                            }
-                          },
-                          icon: Icon(Icons.group_add),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            // print(user.email);
-                            print(loggedInUser.photoUrl);
-                            setState(() {});
-                          },
-                          icon: Icon(Icons.theaters),
-                        )
-                      ],
+                    RaisedButton(
+                      padding: EdgeInsets.all(16),
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(12.0))),
+                      child: Text(
+                        'Login',
+                        style: TextStyle(color: Colors.white, fontSize: 21),
+                      ),
+                      color: Colors.blue,
+                      onPressed: loginButtonAction,
                     ),
                   ],
                 ),

@@ -2,6 +2,7 @@ import 'package:chat_app_starter/register_screen.dart';
 import 'package:chat_app_starter/rooms_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'google_signIn.dart';
 import 'login_screen.dart';
 
 void main() {
@@ -74,18 +75,45 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'login');
-                  },
-                  padding: EdgeInsets.all(16),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(color: Colors.white, fontSize: 21),
-                  ),
-                  color: Colors.blue,
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 5,
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'login');
+                        },
+                        padding: EdgeInsets.all(16),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0))),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(color: Colors.white, fontSize: 21),
+                        ),
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: RaisedButton(
+                        child: Icon(
+                          Icons.plus_one,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          try {
+                            signInWithGoogle().whenComplete(() {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  'rooms', (Route<dynamic> route) => false);
+                            });
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 20,
