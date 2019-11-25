@@ -209,6 +209,8 @@ class _ChatScreenState extends State<ChatScreen> {
     myController.clear();
     FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
     String currentUserEmail = currentUser.email;
+    print(currentUser.photoUrl);
+    print(currentUser.providerData);
     print(currentUserEmail);
     await Firestore.instance
         .collection('rooms')
