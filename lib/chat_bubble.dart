@@ -39,7 +39,7 @@ class ChatBubble extends StatelessWidget {
                 elevation: 5,
                 shape: isCurrentUser ? shapeMe : shapeOthers,
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
+                  padding: EdgeInsets.fromLTRB(12, 6, 12, 6),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width * 0.8,
