@@ -39,10 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
     };
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: ModalProgressHUD(
-          inAsyncCall: _saving,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
+      body: ModalProgressHUD(
+        inAsyncCall: _saving,
+        child: Padding(
+          padding: const EdgeInsets.all(18.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

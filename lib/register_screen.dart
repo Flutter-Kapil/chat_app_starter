@@ -29,6 +29,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     };
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(18.0),
         child: Column(
