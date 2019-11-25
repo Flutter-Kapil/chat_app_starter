@@ -57,7 +57,6 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Row(
-            
             children: <Widget>[
               Text(
                 currentRoomName,
@@ -92,10 +91,10 @@ class _ChatScreenState extends State<ChatScreen> {
                                       .collection('rooms')
                                       .document(widget.roomId)
                                       .updateData({'name': tempRoomName});
-                                      Navigator.pop(context);
-                                      setState(() {
-                                        getRoomName(widget.roomId);
-                                      });
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    getRoomName(widget.roomId);
+                                  });
                                 },
                               )
                             ],
@@ -175,10 +174,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       expands: false,
                       controller: myController,
-                      autocorrect: false,
+                      autocorrect: true,
                       autofocus: false,
-                      showCursor: false,
-                      textAlign: TextAlign.center,
+                      showCursor: true,
+                      decoration: InputDecoration(),
                     ),
                   ),
                   IconButton(
