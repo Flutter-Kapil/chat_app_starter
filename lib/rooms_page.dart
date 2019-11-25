@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'google_signIn.dart';
+
 class RoomsScreen extends StatefulWidget {
   @override
   _RoomsScreenState createState() => _RoomsScreenState();
@@ -55,6 +57,17 @@ class _RoomsScreenState extends State<RoomsScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Chat Rooms'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                signOutGoogle();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
+              },
+            ),
+          ],
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance.collection('rooms').snapshots(),
