@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+import 'google_signIn.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,6 +13,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  TwitterLogin twitterInstance = new TwitterLogin(
+      consumerKey: "your consumer key",
+      consumerSecret: "your consumer secret");
+      TwitterLoginResult result;
+      
   bool _saving = false;
   String userEmail;
   String userPassword;
@@ -40,17 +48,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.0,
+        iconTheme: IconThemeData(color: Colors.blue),
         backgroundColor: Colors.transparent,
       ),
       body: ModalProgressHUD(
         inAsyncCall: _saving,
-        child: Padding(
-          padding: const EdgeInsets.all(18.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Flexible(
-                child: Row(
+        child: SingleChildScrollView(
+                  child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Hero(
@@ -73,65 +83,64 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    TextField(
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          hintText: 'elon@musk.com',
-                          icon: Icon(Icons.email),
-                          border: OutlineInputBorder()),
-                      onChanged: (value) {
-                        userEmail = value;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
                         textAlign: TextAlign.center,
                         maxLines: 1,
-                        obscureText: true,
-                        onEditingComplete: loginButtonAction,
-                        onSubmitted: (value) {
-                          loginButtonAction();
-                        },
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                            icon: Icon(Icons.lock),
-                            hintText: 'spacexRocks',
+                            hintText: 'elon@musk.com',
+                            icon: Icon(Icons.email),
                             border: OutlineInputBorder()),
                         onChanged: (value) {
-                          userPassword = value;
-                        }),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    RaisedButton(
-                      padding: EdgeInsets.all(16),
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(12.0))),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white, fontSize: 21),
+                          userEmail = value;
+                        },
                       ),
-                      color: Colors.blue,
-                      onPressed: loginButtonAction,
-                    ),
-                  ],
-                ),
-              )
-            ],
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          obscureText: true,
+                          onEditingComplete: loginButtonAction,
+                          onSubmitted: (value) {
+                            loginButtonAction();
+                          },
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.lock),
+                              hintText: 'spacexRocks',
+                              border: OutlineInputBorder()),
+                          onChanged: (value) {
+                            userPassword = value;
+                          }),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RaisedButton(
+                        padding: EdgeInsets.all(16),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12.0))),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(color: Colors.white, fontSize: 21),
+                        ),
+                        color: Colors.blue,
+                        onPressed: loginButtonAction,
+                      ),],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

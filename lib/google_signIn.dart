@@ -1,14 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
-  // FirebaseAuth firebaseAuth = FirebaseAuth.instance;//_auth
-  // GoogleSignIn googleSignIn = GoogleSignIn();
-  // //-----------
-  // UserDetails loggedInUser = UserDetails();
-  // FirebaseUser user;
+// FirebaseAuth firebaseAuth = FirebaseAuth.instance;//_auth
+// GoogleSignIn googleSignIn = GoogleSignIn();
+// //-----------
+// UserDetails loggedInUser = UserDetails();
+// FirebaseUser user;
 Future<String> signInWithGoogle() async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
@@ -31,8 +33,11 @@ Future<String> signInWithGoogle() async {
   return 'signInWithGoogle succeeded: $user';
 }
 
-void signOutGoogle() async{
+void signOutGoogle() async {
   await googleSignIn.signOut();
 
   print("User Sign Out");
 }
+
+///twitter sign in
+

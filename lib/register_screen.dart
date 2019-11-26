@@ -41,6 +41,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.0,
+        iconTheme: IconThemeData(color: Colors.blue),
         backgroundColor: Colors.transparent,
       ),
       body: ModalProgressHUD(
@@ -50,7 +52,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Flexible(
+              SingleChildScrollView(
+                
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[

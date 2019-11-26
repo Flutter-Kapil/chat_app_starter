@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "892180272976",
+    "firebase_url": "https://mclaren-chat-app-fd187.firebaseio.com",
+    "project_id": "mclaren-chat-app-fd187",
+    "storage_bucket": "mclaren-chat-app-fd187.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892180272976:android:6465d6e2dba8414b7a7e55",
+        "android_client_info": {
+          "package_name": "com.mclarencollege.chat_app_starter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892180272976-qqh82ocqc96fovdav8qm2s40f9363hvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMz_SzUQBRVMN8S9LvEWNMOqkfBTyGD-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "892180272976-qqh82ocqc96fovdav8qm2s40f9363hvm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
