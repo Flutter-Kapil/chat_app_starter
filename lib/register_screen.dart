@@ -21,17 +21,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     var registerButtonAction = () async {
+      _saving = true;
       try {
-        _saving = true;
+
         AuthResult result = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         if (result.user != null) {
-          firebaseAuth.signInWithEmailAndPassword(
+          await firebaseAuth.signInWithEmailAndPassword(
             email: email, password: password);
             setState(() {
-          
+              Navigator.popAndPushNamed(context, 'rooms');
         });
-          Navigator.popAndPushNamed(context, 'rooms');
+
         }
       } catch (e) {
         _saving = false;
@@ -49,12 +50,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               inAsyncCall: _saving,
               child: Padding(
           padding: const EdgeInsets.all(18.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SingleChildScrollView(
-                
-                child: Row(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Hero(
@@ -77,65 +77,65 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    TextField(
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          hintText: 'elon@musk.com',
-                          icon: Icon(Icons.email),
-                          border: OutlineInputBorder()),
-                      onChanged: (value) {
-                        email = value;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      onSubmitted: (password) {
-                        registerButtonAction();
-                      },
-                      onEditingComplete: registerButtonAction,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.lock),
-                          hintText: 'spacexRocks',
-                          border: OutlineInputBorder()),
-                      onChanged: (value) {
-                        password = value;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    RaisedButton(
-                      padding: EdgeInsets.all(16),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                      child: Text(
-                        'Register',
-                        style: TextStyle(color: Colors.white, fontSize: 21),
-                      ),
-                      color: Colors.purple,
-                      onPressed: registerButtonAction,
-                    ),
-                  ],
+                SizedBox(
+                  height: 20,
                 ),
-              )
-            ],
+                Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            hintText: 'elon@musk.com',
+                            icon: Icon(Icons.email),
+                            border: OutlineInputBorder()),
+                        onChanged: (value) {
+                          email = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        onSubmitted: (password) {
+                          registerButtonAction();
+                        },
+                        onEditingComplete: registerButtonAction,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.lock),
+                            hintText: 'spacexRocks',
+                            border: OutlineInputBorder()),
+                        onChanged: (value) {
+                          password = value;
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RaisedButton(
+                        padding: EdgeInsets.all(16),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(color: Colors.white, fontSize: 21),
+                        ),
+                        color: Colors.purple,
+                        onPressed: registerButtonAction,
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

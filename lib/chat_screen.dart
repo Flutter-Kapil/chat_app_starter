@@ -1,4 +1,3 @@
-import 'package:chat_app_starter/google_signIn.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -109,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: Icon(Icons.exit_to_app),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                signOutGoogle();
+
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
               },

@@ -4,7 +4,6 @@ import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-import 'google_signIn.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -30,8 +29,9 @@ class _LoginScreenState extends State<LoginScreen> {
       try {
         _saving = true;
         setState(() {});
-        firebaseAuth.signInWithEmailAndPassword(
+        await firebaseAuth.signInWithEmailAndPassword(
             email: userEmail, password: userPassword);
+
         // print(result.user.email == userEmail);//#debug statement
         setState(() {
           _saving = false;

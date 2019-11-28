@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import 'google_signIn.dart';
 
 class RoomsScreen extends StatefulWidget {
   @override
@@ -62,7 +61,6 @@ class _RoomsScreenState extends State<RoomsScreen> {
               icon: Icon(Icons.exit_to_app),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                signOutGoogle();
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     '/', (Route<dynamic> route) => false);
               },
@@ -116,6 +114,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                 scrollDirection: Axis.vertical,
               );
             }
+            
           },
         ),
         floatingActionButton: FloatingActionButton(
