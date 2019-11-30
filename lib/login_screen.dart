@@ -39,7 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     };
     return Scaffold(
-      body: ModalProgressHUD(
+        body: Stack(
+    children: <Widget>[
+      ModalProgressHUD(
         inAsyncCall: _saving,
         child: Center(
           child: Padding(
@@ -120,7 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   BorderRadius.all(Radius.circular(12.0))),
                           child: Text(
                             'Login',
-                            style: TextStyle(color: Colors.white, fontSize: 21),
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 21),
                           ),
                           color: Colors.blue,
                           onPressed: loginButtonAction,
@@ -134,6 +137,17 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
+      SafeArea(
+                    child: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.blueGrey,
+          onPressed: () {
+        Navigator.pop(context);
+          },
+        ),
+      ),
+    ],
+        ),
+      );
   }
 }

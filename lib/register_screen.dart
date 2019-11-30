@@ -19,127 +19,131 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     var registerButtonAction = () async {
-      _registering=true;
-      setState(() {
-        
-      });
+      _registering = true;
+      setState(() {});
       try {
-        
         AuthResult result = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         if (result.user != null) {
           setState(() {
-            _registering=false;
-            setState(() {
-              
-            });
+            _registering = false;
+            setState(() {});
           });
           Navigator.popAndPushNamed(context, 'login');
         }
       } catch (e) {
         setState(() {
-          _registering=false;
+          _registering = false;
           _showToast(e.message);
         });
-        
       }
     };
 
     return Scaffold(
-      body: Center(
-        child: ModalProgressHUD(
-          inAsyncCall: _registering,
-                child: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: SingleChildScrollView(
-                          child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: ModalProgressHUD(
+              inAsyncCall: _registering,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Hero(
-                        tag: 'LogoImage',
-                        child: Image(
-                            image: NetworkImage(
-                                'https://mclarencollege.in/images/icon.png'),
-                            fit: BoxFit.contain),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Hero(
+                            tag: 'LogoImage',
+                            child: Image(
+                                image: NetworkImage(
+                                    'https://mclarencollege.in/images/icon.png'),
+                                fit: BoxFit.contain),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            'Register',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 36,
+                                color: Color(0xFF4790F1),
+                                fontFamily: 'Poppins'),
+                          ),
+                        ],
                       ),
                       SizedBox(
-                        width: 10,
+                        height: 20,
                       ),
-                      Text(
-                        'Register',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 36,
-                            color: Color(0xFF4790F1),
-                            fontFamily: 'Poppins'),
-                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            TextField(
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  hintText: 'elon@musk.com',
+                                  icon: Icon(Icons.email),
+                                  border: OutlineInputBorder()),
+                              onChanged: (value) {
+                                email = value;
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            TextField(
+                              onSubmitted: (password) {
+                                registerButtonAction();
+                              },
+                              onEditingComplete: registerButtonAction,
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  icon: Icon(Icons.lock),
+                                  hintText: 'spacexRocks',
+                                  border: OutlineInputBorder()),
+                              onChanged: (value) {
+                                password = value;
+                              },
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            RaisedButton(
+                              padding: EdgeInsets.all(16),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12.0))),
+                              child: Text(
+                                'Register',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 21),
+                              ),
+                              color: Colors.purple,
+                              onPressed: registerButtonAction,
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        TextField(
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                              hintText: 'elon@musk.com',
-                              icon: Icon(Icons.email),
-                              border: OutlineInputBorder()),
-                          onChanged: (value) {
-                            email = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        TextField(
-                          onSubmitted: (password) {
-                            registerButtonAction();
-                          },
-                          onEditingComplete: registerButtonAction,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.lock),
-                              hintText: 'spacexRocks',
-                              border: OutlineInputBorder()),
-                          onChanged: (value) {
-                            password = value;
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        RaisedButton(
-                          padding: EdgeInsets.all(16),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                          child: Text(
-                            'Register',
-                            style: TextStyle(color: Colors.white, fontSize: 21),
-                          ),
-                          color: Colors.purple,
-                          onPressed: registerButtonAction,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                ),
               ),
             ),
           ),
-        ),
+        SafeArea(child: IconButton(icon: Icon(Icons.arrow_back),color: Colors.blueGrey, onPressed: () {
+          Navigator.pop(context);
+        },)),
+          
+        ],
       ),
     );
   }
