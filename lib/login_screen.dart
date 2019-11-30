@@ -17,60 +17,59 @@ class _LoginScreenState extends State<LoginScreen> {
     final _showToast =
         (x) => Fluttertoast.showToast(msg: x, toastLength: Toast.LENGTH_SHORT);
 
-
     var loginButtonAction = () async {
-                            try {
-                              _saving = true;
-                              setState(() {});
-                              AuthResult result = await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                      email: userEmail, password: userPassword);
-                              // print(result.user.email == userEmail);//#debug statement
-                              setState(() {
-                                _saving = false;
-                              });
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  'rooms', (Route<dynamic> route) => false);
-                            } catch (e) {                   
-                              setState(() {
-                                ///TODO: set state
-                                _saving = false;
-                              });
-                              _showToast(e.message);
-                            }
-                          };
-        return Scaffold(
-          body: ModalProgressHUD(
-            inAsyncCall: _saving,
-            child: Padding(
-              padding: const EdgeInsets.all(18.0),
+      try {
+        _saving = true;
+        setState(() {});
+        AuthResult result = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: userEmail, password: userPassword);
+        // print(result.user.email == userEmail);//#debug statement
+        setState(() {
+          _saving = false;
+        });
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('rooms', (Route<dynamic> route) => false);
+      } catch (e) {
+        setState(() {
+          ///TODO: set state
+          _saving = false;
+        });
+        _showToast(e.message);
+      }
+    };
+    return Scaffold(
+      body: ModalProgressHUD(
+        inAsyncCall: _saving,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Flexible(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Hero(
-                          tag: 'LogoImage',
-                          child: Image(
-                              image: NetworkImage(
-                                  'https://mclarencollege.in/images/icon.png'),
-                              fit: BoxFit.contain),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Login',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 36,
-                              color: Color(0xFF4790F1),
-                              fontFamily: 'Poppins'),
-                        ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Hero(
+                        tag: 'LogoImage',
+                        child: Image(
+                            image: NetworkImage(
+                                'https://mclarencollege.in/images/icon.png'),
+                            fit: BoxFit.contain),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Login',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 36,
+                            color: Color(0xFF4790F1),
+                            fontFamily: 'Poppins'),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 20,
@@ -101,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             maxLines: 1,
                             obscureText: true,
                             onEditingComplete: loginButtonAction,
-                            onSubmitted: (value){
+                            onSubmitted: (value) {
                               loginButtonAction();
                             },
                             decoration: InputDecoration(
@@ -125,14 +124,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           color: Colors.blue,
                           onPressed: loginButtonAction,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                  )
+                ],
+              ),
             ),
           ),
+        ),
+      ),
     );
   }
 }
