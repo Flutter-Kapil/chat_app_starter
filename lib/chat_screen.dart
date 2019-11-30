@@ -58,10 +58,6 @@ class _ChatScreenState extends State<ChatScreen> {
                       currentRoomName,
                       style: TextStyle(fontSize: 21),
                     ),
-                    Text(
-                      widget.roomId,
-                      style: TextStyle(color: Colors.grey, fontSize: 15),
-                    )
                   ],
                 ),
                 IconButton(
