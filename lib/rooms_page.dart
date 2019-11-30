@@ -55,6 +55,17 @@ class _RoomsScreenState extends State<RoomsScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Chat Rooms'),
+           actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.exit_to_app),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/', (Route<dynamic> route) => false);
+              },
+            ),
+          ],
+        
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance.collection('rooms').snapshots(),
