@@ -35,17 +35,9 @@ class _ChatScreenState extends State<ChatScreen> {
     currentUser = await FirebaseAuth.instance.currentUser();
   }
 
-//  Future getRoomName(String roomId) async {
-//    print('get meassages called');
-//    QuerySnapshot messages =
-//        await Firestore.instance.collection('rooms').getDocuments();
-//    print(messages.documents.where((x) => x['id'] == roomId));
-//    return messages.documents[0]['name'];
-//  }
   getRoomName(String documentId) async {
     DocumentSnapshot particularDocument =
         await Firestore.instance.document('rooms/$documentId').get();
-//    print(await particularDocument['name']);
     currentRoomName = await particularDocument['name'];
     setState(() {});
   }
@@ -116,7 +108,7 @@ class _ChatScreenState extends State<ChatScreen> {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.power_settings_new),
+              icon: Icon(Icons.exit_to_app),
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
                 Navigator.of(context).pushNamedAndRemoveUntil(
