@@ -68,7 +68,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
         
         ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection('rooms').snapshots(),
+          stream: Firestore.instance.collection('rooms').orderBy('name').snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
