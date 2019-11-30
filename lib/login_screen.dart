@@ -33,16 +33,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   'rooms', (Route<dynamic> route) => false);
                             } catch (e) {                   
                               setState(() {
+                                ///TODO: set state
                                 _saving = false;
                               });
                               _showToast(e.message);
                             }
                           };
         return Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: ModalProgressHUD(
-              inAsyncCall: _saving,
+          body: ModalProgressHUD(
+            inAsyncCall: _saving,
+            child: Padding(
+              padding: const EdgeInsets.all(18.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -130,8 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
               )
             ],
           ),
-        ),
-      ),
+            ),
+          ),
     );
   }
 }
