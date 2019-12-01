@@ -47,62 +47,50 @@ class _ChatScreenState extends State<ChatScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text(
-                      currentRoomName,
-                      style: TextStyle(fontSize: 21),
-                    ),
-                  ],
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.edit,
-                    color: Colors.white30,
-                  ),
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              title: Text('Edit Room Name'),
-                              content: TextField(
-                                showCursor: true,
-                                controller: editRoomNameController,
-                              ),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    String tempRoomName =
-                                        editRoomNameController.text;
-                                    print('tempRoomName:$tempRoomName');
-                                    print(
-                                        'roomController tetx: ${editRoomNameController.text}');
-                                    editRoomNameController.clear();
-                                    Firestore.instance
-                                        .collection('rooms')
-                                        .document(widget.roomId)
-                                        .updateData({'name': tempRoomName});
-                                    Navigator.pop(context);
-                                    setState(() {
-                                      getRoomName(widget.roomId);
-                                    });
-                                  },
-                                )
-                              ],
-                            ));
-                  },
-                )
-              ],
-            ),
+          title: Text(
+            currentRoomName,
+            overflow: TextOverflow.visible,
+            softWrap: true,
+            maxLines: 2,
+            style: TextStyle(fontSize: 16),
           ),
           centerTitle: true,
           actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                          title: Text('Edit Room Name'),
+                          content: TextField(
+                            showCursor: true,
+                            controller: editRoomNameController,
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                String tempRoomName =
+                                    editRoomNameController.text;
+                                print('tempRoomName:$tempRoomName');
+                                print(
+                                    'roomController tetx: ${editRoomNameController.text}');
+                                editRoomNameController.clear();
+                                Firestore.instance
+                                    .collection('rooms')
+                                    .document(widget.roomId)
+                                    .updateData({'name': tempRoomName});
+                                Navigator.pop(context);
+                                setState(() {
+                                  getRoomName(widget.roomId);
+                                });
+                              },
+                            )
+                          ],
+                        ));
+              },
+            ),
             IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () async {
