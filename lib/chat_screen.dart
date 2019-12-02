@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'chat_bubble.dart';
 
@@ -53,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
             overflow: TextOverflow.visible,
             softWrap: true,
             maxLines: 2,
-            style: TextStyle(fontSize: 19),
+            style: TextStyle(fontSize: 21),
           ),
           centerTitle: true,
           actions: <Widget>[
@@ -92,15 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ));
               },
             ),
-            IconButton(
-              icon: Icon(FontAwesomeIcons.signOutAlt),
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/', (Route<dynamic> route) => false);
-              },
-            ),
-          ],
+           ],
         ),
         body: SafeArea(
           child: Column(
