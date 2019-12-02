@@ -1,9 +1,8 @@
+import 'package:chat_app_starter/custom%20widgets/chat_bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-
-import 'chat_bubble.dart';
 
 class ChatScreen extends StatefulWidget {
   final String roomId;

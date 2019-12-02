@@ -46,7 +46,7 @@ class _SearchRoomsState extends State<SearchRooms> {
             .toList()
             .length,
         itemBuilder: (context, index) {
-          return ListTile(
+          var listTile = ListTile(
             title: Text(widget.roomsList
                 .where((x) =>
                     x[0].contains(roomSearchController.text.toUpperCase()) ||
@@ -65,6 +65,7 @@ class _SearchRoomsState extends State<SearchRooms> {
                   MaterialPageRoute(builder: (context) => ChatScreen(roomId)));
             },
           );
+          return listTile;
         },
       ),
     );

@@ -1,10 +1,11 @@
-import 'package:chat_app_starter/chat_screen.dart';
-import 'package:chat_app_starter/search_rooms_widget.dart';
+
+import 'package:chat_app_starter/screens/search_rooms_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:math';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'chat_screen.dart';
 
 class RoomsScreen extends StatefulWidget {
   @override

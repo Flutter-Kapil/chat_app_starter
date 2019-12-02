@@ -1,9 +1,10 @@
-import 'package:chat_app_starter/register_screen.dart';
-import 'package:chat_app_starter/rooms_page.dart';
-import 'package:chat_app_starter/search_rooms_widget.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/rooms_page.dart';
+import 'screens/search_rooms_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
+
 
 void main() {
   runApp(
