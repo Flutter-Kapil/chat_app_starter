@@ -25,11 +25,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
         AuthResult result = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         if (result.user != null) {
+          await FirebaseAuth.instance
+              .signInWithEmailAndPassword(email: email, password: password);
           setState(() {
             _registering = false;
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                'rooms', (Route<dynamic> route) => false);
             setState(() {});
           });
-          Navigator.popAndPushNamed(context, 'login');
+          // Navigator.popAndPushNamed(context, 'login');
         }
       } catch (e) {
         setState(() {
@@ -139,10 +143,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-        SafeArea(child: IconButton(icon: Icon(Icons.arrow_back),color: Colors.blueGrey, onPressed: () {
-          Navigator.pop(context);
-        },)),
-          
+          SafeArea(
+              child: IconButton(
+            icon: Icon(Icons.arrow_back),
+            color: Colors.blueGrey,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )),
         ],
       ),
     );
