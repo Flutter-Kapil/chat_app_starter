@@ -93,11 +93,12 @@ class _RoomsScreenState extends State<RoomsScreen> {
               return Center(child: CircularProgressIndicator());
             } else {
               return ListView.builder(
-                padding: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.only(top: 10),
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: EdgeInsets.fromLTRB(25, 2, 25, 0),
+                    padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
                     child: Card(
+                      elevation: 5,
                       child: ListTile(
                         trailing: Icon(Icons.arrow_forward_ios),
                         leading: Icon(
@@ -116,10 +117,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                   builder: (context) => ChatScreen(snapshot
                                       .data.documents[index].documentID)));
                         },
-                        title: snapshot.data.documents[index].data['name'] !=
-                                null
-                            ? Text(snapshot.data.documents[index].data['name'])
-                            : Text('No Name'),
+                        title: Text(snapshot.data.documents[index].data['name']),
                       ),
                     ),
                   );
