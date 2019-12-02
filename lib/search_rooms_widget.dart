@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'chat_screen.dart';
+
 class SearchRooms extends StatefulWidget {
-  final List roomsList;
+  final List<List<String>> roomsList;
 
   SearchRooms([this.roomsList]);
   @override
@@ -22,8 +24,9 @@ class _SearchRoomsState extends State<SearchRooms> {
 
   @override
   Widget build(BuildContext context) {
-    widget.roomsList.sort();
-    List copyListForSearch = List.from(widget.roomsList.toList()); 
+    // widget.roomsList.sort((subList)=>subList[0]);
+    widget.roomsList.sort((a, b) => a[0].compareTo(b[0]));
+    // List copyListForSearch = List.from(widget.roomsList.toList());
     return Scaffold(
       appBar: AppBar(
         title: TextField(
@@ -33,14 +36,30 @@ class _SearchRoomsState extends State<SearchRooms> {
       ),
       body: ListView.builder(
         itemCount: widget.roomsList
-            .where((x) => x.contains(roomSearchController.text))
+            .where((x) =>
+                x[0].contains(roomSearchController.text.toUpperCase()) ||
+                x[0].contains(roomSearchController.text.toLowerCase()))
             .toList()
             .length,
         itemBuilder: (context, index) {
           return ListTile(
             title: Text(widget.roomsList
-                .where((x) => x.contains(roomSearchController.text))
-                .toList()[index]),
+                .where((x) =>
+                    x[0].contains(roomSearchController.text.toUpperCase()) ||
+                    x[0].contains(roomSearchController.text.toLowerCase()))
+                .toList()[index][0]),
+            onTap: () {
+              print('tapped on some item');
+              String roomId = widget.roomsList
+                  .where((x) =>
+                      x[0].contains(roomSearchController.text.toUpperCase()) ||
+                      x[0].contains(roomSearchController.text.toLowerCase()))
+                  .toList()[index][1];
+              print('roomId:$roomId');
+              Navigator.pop(context);
+              Navigator.push((context),
+                  MaterialPageRoute(builder: (context) => ChatScreen(roomId)));
+            },
           );
         },
       ),

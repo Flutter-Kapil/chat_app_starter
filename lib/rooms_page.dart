@@ -13,7 +13,7 @@ class RoomsScreen extends StatefulWidget {
 
 class _RoomsScreenState extends State<RoomsScreen> {
   List roomsIDlist = [];
-  List roomsNamelist = [];
+  List<List<String>> roomsNamelist = [];
   //variables for RoomsScreen
   FirebaseUser currentUser;
   final roomIdController = TextEditingController();
@@ -40,9 +40,11 @@ class _RoomsScreenState extends State<RoomsScreen> {
         await Firestore.instance.collection('rooms').getDocuments();
     rooms.documents.forEach((document) => roomsIDlist.add(document.documentID));
 
-    rooms.documents.forEach((document) => roomsNamelist.add(document['name']));
+    rooms.documents.forEach((document) {
+      roomsNamelist.add([document['name'], document.documentID]);
+    });
 
-    print(roomsNamelist);
+    // print(roomsNamelist);
   }
 
   Future getCurrentUser() async {

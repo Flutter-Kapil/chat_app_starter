@@ -1,5 +1,6 @@
 import 'package:chat_app_starter/register_screen.dart';
 import 'package:chat_app_starter/rooms_page.dart';
+import 'package:chat_app_starter/search_rooms_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login_screen.dart';
@@ -16,6 +17,7 @@ void main() {
         'register': (context) => RegisterScreen(),
 //        'chat': (context) => ChatScreen(),
         'rooms': (context) => RoomsScreen(),
+        'searchRooms': (context) => SearchRooms(),
       },
     ),
   );
