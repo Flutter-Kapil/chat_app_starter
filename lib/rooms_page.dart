@@ -116,10 +116,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                   builder: (context) => ChatScreen(snapshot
                                       .data.documents[index].documentID)));
                         },
-                        subtitle: Text(
-                          'ID:${snapshot.data.documents[index].documentID}',
-                          style: TextStyle(color: Colors.black38, fontSize: 16),
-                        ),
+                        
                         title: snapshot.data.documents[index].data['name'] !=
                                 null
                             ? Text(snapshot.data.documents[index].data['name'])
