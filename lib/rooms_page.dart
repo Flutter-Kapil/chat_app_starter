@@ -1,4 +1,5 @@
 import 'package:chat_app_starter/chat_screen.dart';
+import 'package:chat_app_starter/search_rooms_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +12,8 @@ class RoomsScreen extends StatefulWidget {
 }
 
 class _RoomsScreenState extends State<RoomsScreen> {
-  List roomsList = [];
+  List roomsIDlist = [];
+  List roomsNamelist = [];
   //variables for RoomsScreen
   FirebaseUser currentUser;
   final roomIdController = TextEditingController();
@@ -32,14 +34,15 @@ class _RoomsScreenState extends State<RoomsScreen> {
   }
 
   Future getRoomsList() async {
-    roomsList = [];
-    await Firestore.instance.collection('rooms').getDocuments();
+    roomsIDlist = [];
+    roomsNamelist = [];
     QuerySnapshot rooms =
         await Firestore.instance.collection('rooms').getDocuments();
-    for (DocumentSnapshot roomID in rooms.documents) {
-      roomsList.add(roomID.documentID);
-    }
-    print(roomsList);
+    rooms.documents.forEach((document) => roomsIDlist.add(document.documentID));
+
+    rooms.documents.forEach((document) => roomsNamelist.add(document['name']));
+
+    print(roomsNamelist);
   }
 
   Future getCurrentUser() async {
@@ -55,7 +58,19 @@ class _RoomsScreenState extends State<RoomsScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text('Chat Rooms'),
-           actions: <Widget>[
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              color: Colors.white,
+              onPressed: () async {
+                await getRoomsList();
+                print(roomsIDlist);
+                Navigator.push(
+                    (context),
+                    MaterialPageRoute(
+                        builder: (context) => SearchRooms(roomsNamelist)));
+              },
+            ),
             IconButton(
               icon: Icon(Icons.exit_to_app),
               onPressed: () async {
@@ -65,10 +80,12 @@ class _RoomsScreenState extends State<RoomsScreen> {
               },
             ),
           ],
-        
         ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection('rooms').orderBy('name').snapshots(),
+          stream: Firestore.instance
+              .collection('rooms')
+              .orderBy('name')
+              .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(child: CircularProgressIndicator());
@@ -137,7 +154,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                             Navigator.pop(context);
                             int randomNumber = 1111 + Random().nextInt(888);
                             roomId = randomNumber.toString();
-                            if (roomsList.contains(roomId)) {
+                            if (roomsIDlist.contains(roomId)) {
                               print("current Room Id already exits, try again");
                               _showToast(
                                   "current Room Id already exits, try again");
@@ -176,6 +193,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                                 'time': DateTime.now(),
                                                 'name': roomName
                                               });
+                                              getRoomsList();
                                               Navigator.pushReplacement(
                                                   (context),
                                                   MaterialPageRoute(
@@ -224,7 +242,8 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                                   'trying to join room $roomId');
 
                                               await getRoomsList();
-                                              if (roomsList.contains(roomId)) {
+                                              if (roomsIDlist
+                                                  .contains(roomId)) {
                                                 Navigator.pop(context);
                                                 Navigator.push(
                                                     (context),
