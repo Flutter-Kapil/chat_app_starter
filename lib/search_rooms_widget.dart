@@ -30,8 +30,12 @@ class _SearchRoomsState extends State<SearchRooms> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          showCursor: true,
           controller: roomSearchController,
-          decoration: InputDecoration(hintText: 'Enter Room Name'),
+          style: TextStyle(color: Colors.white),
+          cursorColor: Colors.black,
+          decoration: InputDecoration(hintText: 'Enter Room Name',hintStyle: TextStyle(color: Colors.white)),
+          textInputAction: TextInputAction.search,
         ),
       ),
       body: ListView.builder(
