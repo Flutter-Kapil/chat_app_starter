@@ -76,19 +76,23 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
           RaisedButton(
             child: Text(' Log out'),
-            onPressed: () {},
+            onPressed: () {
+              FitKit.revokePermissions();
+            },
           ),
           RaisedButton(
             child: Text(' Get Data'),
             onPressed: () async{
               bool permissionGranted = await FitKit.requestPermissions(DataType.values);
               print('permission granted status:$permissionGranted');
-              try{
-                final result = await FitKit.readLast(DataType.HEIGHT);
-                print(result);
-              }catch(e){
+              await readAll();
+//              try{
+//                var result = await FitKit.read(DataType.HEIGHT,dateFrom: DateTime.now().subtract(Duration(days: 5)),
+//                  dateTo: DateTime.now());
+//                print(result);
+//              }catch(e){
 //                print('error:$e');
-              }
+//              }
             },
           ),
         ],
