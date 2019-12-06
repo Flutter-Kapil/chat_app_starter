@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
       try {
         _saving = true;
         setState(() {});
-        firebaseAuth.signInWithEmailAndPassword(
+        await firebaseAuth.signInWithEmailAndPassword(
             email: userEmail, password: userPassword);
         // print(result.user.email == userEmail);//#debug statement
         setState(() {

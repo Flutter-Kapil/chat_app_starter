@@ -26,7 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         AuthResult result = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
         if (result.user != null) {
-          firebaseAuth.signInWithEmailAndPassword(
+          await firebaseAuth.signInWithEmailAndPassword(
             email: email, password: password);
             setState(() {
           
