@@ -81,8 +81,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           RaisedButton(
             child: Text(' Get Data'),
             onPressed: () async{
-              final result = await FitKit.readLast(DataType.HEIGHT);
-              print(result);
+              bool permissionGranted = await FitKit.requestPermissions(DataType.values);
+              print('permission granted status:$permissionGranted');
+              try{
+                final result = await FitKit.readLast(DataType.HEIGHT);
+                print(result);
+              }catch(e){
+//                print('error:$e');
+              }
             },
           ),
         ],
