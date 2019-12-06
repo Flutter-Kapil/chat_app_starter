@@ -37,30 +37,23 @@ void readAll() async {
     for (DataType type in DataType.values) {
       final results = await FitKit.read(
         type,
-        dateFrom: DateTime.now().subtract(Duration(days: 5)),
+        dateFrom: DateTime.now().subtract(Duration(days: 1)),
         dateTo: DateTime.now(),
       );
       print('fetched Data');
-      print(results);
+      results.forEach((item){
+        print(item);
+      });
     }
   }
 }
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  @override
-  void initState() {
-    isUserLoggedIn();
-    // TODO: implement initState
-    super.initState();
-  }
 
-  isUserLoggedIn() async {
-    var x = await FirebaseAuth.instance.currentUser();
-    if (x != null) {
-//      Navigator.pushReplacementNamed(context, 'rooms');
-    print(x.email);
-    print(x.uid);
-    print(x.providerId);
-    }
+  void getStepsCountForLast24Hours() async{
+    List<FitData> stepsCountFitDataList = await FitKit.read(DataType.STEP_COUNT, dateFrom: DateTime.now().subtract(Duration(hours: 24)),dateTo: DateTime.now());
+    stepsCountFitDataList.forEach((fitData){
+      print('Total Steps count: ${fitData.value} ,userEntered Steps Count: ${fitData.value}, dateFrom: ${fitData.dateFrom},, dateTo: ${fitData.dateTo} ');
+    });
   }
 
   @override
@@ -83,16 +76,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           RaisedButton(
             child: Text(' Get Data'),
             onPressed: () async{
-              bool permissionGranted = await FitKit.requestPermissions(DataType.values);
+              print(DateTime.now().toIso8601String());//request permission for steps count
+              bool permissionGranted = await FitKit.requestPermissions([DataType.STEP_COUNT],);
               print('permission granted status:$permissionGranted');
-              await readAll();
-//              try{
-//                var result = await FitKit.read(DataType.HEIGHT,dateFrom: DateTime.now().subtract(Duration(days: 5)),
-//                  dateTo: DateTime.now());
-//                print(result);
-//              }catch(e){
-//                print('error:$e');
-//              }
+              //get step count
+              getStepsCountForLast24Hours();
             },
           ),
         ],
