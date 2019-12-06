@@ -20,6 +20,7 @@ class WelcomeScreen extends StatefulWidget {
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
+
 void read() async {
   final results = await FitKit.read(
     DataType.HEIGHT,
@@ -41,18 +42,21 @@ void readAll() async {
         dateTo: DateTime.now(),
       );
       print('fetched Data');
-      results.forEach((item){
+      results.forEach((item) {
         print(item);
       });
     }
   }
 }
-class _WelcomeScreenState extends State<WelcomeScreen> {
 
-  void getStepsCountForLast24Hours() async{
-    List<FitData> stepsCountFitDataList = await FitKit.read(DataType.STEP_COUNT, dateFrom: DateTime.now().subtract(Duration(hours: 24)),dateTo: DateTime.now());
-    stepsCountFitDataList.forEach((fitData){
-      print('Total Steps count: ${fitData.value} ,userEntered Steps Count: ${fitData.value}, dateFrom: ${fitData.dateFrom},, dateTo: ${fitData.dateTo} ');
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  void getStepsCountForLast24Hours() async {
+    List<FitData> stepsCountFitDataList = await FitKit.read(DataType.STEP_COUNT,
+        dateFrom: DateTime.now().subtract(Duration(hours: 24)),
+        dateTo: DateTime.now());
+    stepsCountFitDataList.forEach((fitData) {
+      print(
+          'Total Steps count: ${fitData.value} ,userEntered Steps Count: ${fitData.value}, dateFrom: ${fitData.dateFrom},, dateTo: ${fitData.dateTo} ');
     });
   }
 
@@ -75,9 +79,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           ),
           RaisedButton(
             child: Text(' Get Data'),
-            onPressed: () async{
-              print(DateTime.now().toIso8601String());//request permission for steps count
-              bool permissionGranted = await FitKit.requestPermissions([DataType.STEP_COUNT],);
+            onPressed: () async {
+              print(DateTime.now()
+                  .toIso8601String()); //request permission for steps count
+              bool permissionGranted = await FitKit.requestPermissions(
+                [DataType.STEP_COUNT],
+              );
               print('permission granted status:$permissionGranted');
               //get step count
               getStepsCountForLast24Hours();
