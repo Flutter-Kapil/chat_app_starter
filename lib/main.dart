@@ -1,9 +1,6 @@
-import 'package:chat_app_starter/register_screen.dart';
-import 'package:chat_app_starter/rooms_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'google_signIn.dart';
-import 'login_screen.dart';
 import 'package:fit_kit/fit_kit.dart';
 
 void main() {
@@ -14,10 +11,6 @@ void main() {
       initialRoute: '/',
       routes: {
         '/': (context) => WelcomeScreen(),
-        'login': (context) => LoginScreen(),
-        'register': (context) => RegisterScreen(),
-//        'chat': (context) => ChatScreen(),
-        'rooms': (context) => RoomsScreen(),
       },
     ),
   );
@@ -27,7 +20,31 @@ class WelcomeScreen extends StatefulWidget {
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
+void read() async {
+  final results = await FitKit.read(
+    DataType.HEIGHT,
+    dateFrom: DateTime.now().subtract(Duration(days: 5)),
+    dateTo: DateTime.now(),
+  );
+}
 
+void readLast() async {
+  final result = await FitKit.readLast(DataType.HEIGHT);
+}
+
+void readAll() async {
+  if (await FitKit.requestPermissions(DataType.values)) {
+    for (DataType type in DataType.values) {
+      final results = await FitKit.read(
+        type,
+        dateFrom: DateTime.now().subtract(Duration(days: 5)),
+        dateTo: DateTime.now(),
+      );
+      print('fetched Data');
+      print(results);
+    }
+  }
+}
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
@@ -39,104 +56,37 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   isUserLoggedIn() async {
     var x = await FirebaseAuth.instance.currentUser();
     if (x != null) {
-      Navigator.pushReplacementNamed(context, 'rooms');
+//      Navigator.pushReplacementNamed(context, 'rooms');
+    print(x.email);
+    print(x.uid);
+    print(x.providerId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Hero(
-            tag: 'LogoImage',
-            child: Image(
-                image:
-                    NetworkImage('https://mclarencollege.in/images/icon.png'),
-                width: 200,
-                height: 200,
-                fit: BoxFit.contain),
+          RaisedButton(
+            child: Text(' Log in to FitBit'),
+            onPressed: () {},
           ),
-          Container(
-            padding: EdgeInsets.all(12.0),
-            alignment: Alignment.center,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Text(
-                  'McLaren Chat',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 36,
-                      color: Color(0xFF4790F1),
-                      fontFamily: 'Poppins'),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 5,
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, 'login');
-                        },
-                        padding: EdgeInsets.all(16),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12.0))),
-                        child: Text(
-                          'Login',
-                          style: TextStyle(color: Colors.white, fontSize: 21),
-                        ),
-                        color: Colors.blue,
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: RaisedButton(
-                        child: Icon(
-                          Icons.plus_one,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          try {
-                            signInWithGoogle().whenComplete(() {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  'rooms', (Route<dynamic> route) => false);
-                            });
-                          } catch (e) {
-                            print(e);
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, 'register');
-                  },
-                  padding: EdgeInsets.all(16),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                  child: Text(
-                    'Register',
-                    style: TextStyle(color: Colors.white, fontSize: 21),
-                  ),
-                  color: Colors.purple,
-                ),
-              ],
-            ),
-          )
+          RaisedButton(
+            child: Text(' Log out'),
+            onPressed: () {},
+          ),
+          RaisedButton(
+            child: Text(' Get Data'),
+            onPressed: () async{
+              final result = await FitKit.readLast(DataType.HEIGHT);
+              print(result);
+            },
+          ),
         ],
       ),
-    );
+    ));
   }
 }
