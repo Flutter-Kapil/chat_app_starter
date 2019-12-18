@@ -41,6 +41,25 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {});
   }
 
+  List<String> weekDays = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Frinday',
+    'Saturday',
+    'Sunday'
+  ];
+  bool bool1 = false;
+  bool bool2 = false;
+  bool bool3 = false;
+  bool bool4 = false;
+  bool bool5 = false;
+  bool bool6 = false;
+  bool bool7 = false;
+//  List<bool> weekDaysBool = [bool1,bool2,bool3,bool4,bool5,bool6,bool7];
+  List<bool> weekDaysBool = [false, false, false, false, false, false, false];
+  bool optionsVisibility = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -90,7 +109,14 @@ class _ChatScreenState extends State<ChatScreen> {
                         ));
               },
             ),
-           ],
+            IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                optionsVisibility = !optionsVisibility;
+                setState(() {});
+              },
+            )
+          ],
         ),
         body: SafeArea(
           child: Column(
@@ -163,6 +189,20 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ],
               ),
+              Visibility(
+                visible: optionsVisibility,
+                child: Column(
+                  children: <Widget>[
+                    CustomCheckBox(weekDays, weekDaysBool, 0),
+                    CustomCheckBox(weekDays, weekDaysBool, 1),
+                    CustomCheckBox(weekDays, weekDaysBool, 2),
+                    CustomCheckBox(weekDays, weekDaysBool, 3),
+                    CustomCheckBox(weekDays, weekDaysBool, 4),
+                    CustomCheckBox(weekDays, weekDaysBool, 5),
+                    CustomCheckBox(weekDays, weekDaysBool, 6)
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -182,5 +222,35 @@ class _ChatScreenState extends State<ChatScreen> {
         .collection('messages')
         .add(
             {'sender': currentUserEmail, 'text': temp, 'time': DateTime.now()});
+  }
+}
+
+class CustomCheckBox extends StatefulWidget {
+  int index;
+  List<String> weekDays;
+  List<bool> weekDaysBool;
+  CustomCheckBox(this.weekDays, this.weekDaysBool, this.index);
+  @override
+  _CustomCheckBoxState createState() => _CustomCheckBoxState();
+}
+
+class _CustomCheckBoxState extends State<CustomCheckBox> {
+  @override
+  Widget build(BuildContext context) {
+    return CheckboxListTile(
+      value: widget.weekDaysBool[widget.index],
+      title: Text(widget.weekDays[widget.index]),
+      onChanged: (newValue) {
+        widget.weekDaysBool[widget.index] = newValue;
+        String selectedDays = '';
+        setState(() {});
+        for (int i = 0; i < 7; i++) {
+          if (widget.weekDaysBool[i]) {
+            selectedDays = selectedDays + widget.weekDays[i] + ',';
+          }
+        }
+        print(selectedDays);
+      },
+    );
   }
 }
