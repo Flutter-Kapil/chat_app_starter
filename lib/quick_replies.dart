@@ -20,10 +20,10 @@ class _QuickRepliesState extends State<QuickReplies> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      child: Visibility(
-        visible: widget.showReplies,
+    return Visibility(
+      visible: widget.showReplies,
+      child: Container(
+        height: 200,
         child: ListView.builder(
           itemCount: widget.replies.length,
           itemBuilder: (BuildContext context, int index) {
