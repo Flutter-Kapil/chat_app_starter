@@ -16,6 +16,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  String selectedReplies;
   List roomsList = [];
   FirebaseUser currentUser;
   bool isCurrentUserBool;
@@ -80,6 +81,11 @@ class _ChatScreenState extends State<ChatScreen> {
   bool optionsVisibility = false;
   @override
   Widget build(BuildContext context) {
+    print('hi');
+    print('selected replies :$selectedReplies');
+    // if(selectedReplies.split(',').toList().length>3){
+    //   myController.text=selectedReplies;
+    // }
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -210,6 +216,7 @@ class _ChatScreenState extends State<ChatScreen> {
               QuickReplies(
                 replies: weekDays,
                 showReplies: optionsVisibility,
+                selectedRepliesText: myController,
               ),
             ],
           ),

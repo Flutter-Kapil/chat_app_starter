@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class QuickReplies extends StatefulWidget {
   List<String> replies;
   bool showReplies = false;
-  QuickReplies({this.replies, this.showReplies});
+  TextEditingController selectedRepliesText;
+  QuickReplies({this.replies, this.showReplies, this.selectedRepliesText});
   @override
   _QuickRepliesState createState() => _QuickRepliesState();
 }
@@ -27,7 +28,12 @@ class _QuickRepliesState extends State<QuickReplies> {
         child: ListView.builder(
           itemCount: widget.replies.length,
           itemBuilder: (BuildContext context, int index) {
-            return CustomCheckBox(widget.replies, selectedReplies, index);
+            return CustomCheckBox(
+              weekDays: widget.replies,
+              weekDaysBool: selectedReplies,
+              index: index,
+              selectedRepliesText: widget.selectedRepliesText,
+            );
           },
         ),
       ),
@@ -39,7 +45,9 @@ class CustomCheckBox extends StatefulWidget {
   int index;
   List<String> weekDays;
   List<bool> weekDaysBool;
-  CustomCheckBox(this.weekDays, this.weekDaysBool, this.index);
+  TextEditingController selectedRepliesText;
+  CustomCheckBox(
+      {this.weekDays, this.weekDaysBool, this.index, this.selectedRepliesText});
   @override
   _CustomCheckBoxState createState() => _CustomCheckBoxState();
 }
@@ -59,6 +67,9 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
             selectedDays = selectedDays + widget.weekDays[i] + ',';
           }
         }
+        widget.selectedRepliesText.text = selectedDays;
+        print(
+            'selected repliesText editing controller value is  :${widget.selectedRepliesText}');
         print(selectedDays);
       },
     );
