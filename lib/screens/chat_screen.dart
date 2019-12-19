@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 
+import '../quick_replies.dart';
+
 class ChatScreen extends StatefulWidget {
   final String roomId;
   ChatScreen(this.roomId);
@@ -44,13 +46,15 @@ class _ChatScreenState extends State<ChatScreen> {
     setState(() {});
   }
 
-  String _message='';
+  String _message = '';
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  _register(){
-    _firebaseMessaging.getToken().then((token)=>print('your token is $token'));
+  _register() {
+    _firebaseMessaging
+        .getToken()
+        .then((token) => print('your token is $token'));
   }
 
-  void getMessage(){
+  void getMessage() {
     _firebaseMessaging.configure(
         onMessage: (Map<String, dynamic> message) async {
       print('on message $message');
@@ -64,7 +68,6 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-
   List<String> weekDays = [
     'Monday',
     'Tuesday',
@@ -74,15 +77,6 @@ class _ChatScreenState extends State<ChatScreen> {
     'Saturday',
     'Sunday'
   ];
-  bool bool1 = false;
-  bool bool2 = false;
-  bool bool3 = false;
-  bool bool4 = false;
-  bool bool5 = false;
-  bool bool6 = false;
-  bool bool7 = false;
-//  List<bool> weekDaysBool = [bool1,bool2,bool3,bool4,bool5,bool6,bool7];
-  List<bool> weekDaysBool = [false, false, false, false, false, false, false];
   bool optionsVisibility = false;
   @override
   Widget build(BuildContext context) {
@@ -213,20 +207,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ],
               ),
-              Visibility(
-                visible: optionsVisibility,
-                child: Column(
-                  children: <Widget>[
-                    CustomCheckBox(weekDays, weekDaysBool, 0),
-                    CustomCheckBox(weekDays, weekDaysBool, 1),
-                    CustomCheckBox(weekDays, weekDaysBool, 2),
-                    CustomCheckBox(weekDays, weekDaysBool, 3),
-                    CustomCheckBox(weekDays, weekDaysBool, 4),
-                    CustomCheckBox(weekDays, weekDaysBool, 5),
-                    CustomCheckBox(weekDays, weekDaysBool, 6)
-                  ],
-                ),
-              )
+              QuickReplies(
+                replies: weekDays,
+                showReplies: optionsVisibility,
+              ),
             ],
           ),
         ),
@@ -246,35 +230,5 @@ class _ChatScreenState extends State<ChatScreen> {
         .collection('messages')
         .add(
             {'sender': currentUserEmail, 'text': temp, 'time': DateTime.now()});
-  }
-}
-
-class CustomCheckBox extends StatefulWidget {
-  int index;
-  List<String> weekDays;
-  List<bool> weekDaysBool;
-  CustomCheckBox(this.weekDays, this.weekDaysBool, this.index);
-  @override
-  _CustomCheckBoxState createState() => _CustomCheckBoxState();
-}
-
-class _CustomCheckBoxState extends State<CustomCheckBox> {
-  @override
-  Widget build(BuildContext context) {
-    return CheckboxListTile(
-      value: widget.weekDaysBool[widget.index],
-      title: Text(widget.weekDays[widget.index]),
-      onChanged: (newValue) {
-        widget.weekDaysBool[widget.index] = newValue;
-        String selectedDays = '';
-        setState(() {});
-        for (int i = 0; i < 7; i++) {
-          if (widget.weekDaysBool[i]) {
-            selectedDays = selectedDays + widget.weekDays[i] + ',';
-          }
-        }
-        print(selectedDays);
-      },
-    );
   }
 }
