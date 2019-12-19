@@ -1,4 +1,5 @@
 import 'package:chat_app_starter/custom%20widgets/chat_bubble.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -27,7 +28,9 @@ class _ChatScreenState extends State<ChatScreen> {
     });
     getCurrentUser();
     getRoomName(widget.roomId);
+    getMessage();
     super.initState();
+    _register();
   }
 
   Future getCurrentUser() async {
@@ -40,6 +43,27 @@ class _ChatScreenState extends State<ChatScreen> {
     currentRoomName = await particularDocument['name'];
     setState(() {});
   }
+
+  String _message='';
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  _register(){
+    _firebaseMessaging.getToken().then((token)=>print('your token is $token'));
+  }
+
+  void getMessage(){
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+      print('on message $message');
+      setState(() => _message = message["notification"]["title"]);
+    }, onResume: (Map<String, dynamic> message) async {
+      print('on resume $message');
+      setState(() => _message = message["notification"]["title"]);
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print('on launch $message');
+      setState(() => _message = message["notification"]["title"]);
+    });
+  }
+
 
   List<String> weekDays = [
     'Monday',
