@@ -209,7 +209,10 @@ class _ChatScreenState extends State<ChatScreen> {
                     icon: Icon(Icons.send),
                     disabledColor: Colors.grey,
                     color: Colors.blue,
-                    onPressed: myController.text.isEmpty ? null : sendMessage,
+                    onPressed: (myController.text.isEmpty ||
+                            myController.text.split(',').toList().length > 4)
+                        ? null
+                        : sendMessage,
                   ),
                 ],
               ),
