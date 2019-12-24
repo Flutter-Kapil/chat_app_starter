@@ -1,5 +1,18 @@
 import 'package:flutter/material.dart';
 
+//
+//class QuickRepliesPopUp{
+//   bool showOptions;
+//  Widget popUpWidget;
+//   List<String> optionsList;
+//  TextEditingController textController;
+//  QuickRepliesPopUp({this.popUpWidget,this.showOptions,this.optionsList});
+//
+//  QuickReplies theWidget = QuickReplies(replies: optionsList,selectedReplies: [],sendButtonBool: showOptions,showReplies: showOptions,)
+//
+//}
+//bool  testBool=false;
+//QuickRepliesPopUp qr = QuickRepliesPopUp(popUpWidget: QuickReplies,showOptions:testbool );
 class QuickReplies extends StatefulWidget {
   List<String> replies;
   List<String> selectedReplies;

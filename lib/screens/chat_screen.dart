@@ -16,7 +16,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  List<String> selectedRepliesList=[];
+  List<String> selectedRepliesList = [];
   List roomsList = [];
   FirebaseUser currentUser;
   bool isCurrentUserBool;
@@ -24,17 +24,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final myController = TextEditingController();
   List<Widget> chatWidgets = [];
   String currentRoomName = '...';
-  @override
-  void initState() {
-    myController.addListener(() {
-      setState(() {});
-    });
-    getCurrentUser();
-    getRoomName(widget.roomId);
-    getMessage();
-    super.initState();
-    _register();
-  }
 
   Future getCurrentUser() async {
     currentUser = await FirebaseAuth.instance.currentUser();
@@ -79,11 +68,33 @@ class _ChatScreenState extends State<ChatScreen> {
     'Sunday'
   ];
   bool repliesVisibility = false;
-  bool disableButton =false;
+  bool disableButton = false;
+  QuickReplies quickReply;
+
+  @override
+  void initState() {
+    myController.addListener(() {
+      setState(() {});
+    });
+    getCurrentUser();
+    getRoomName(widget.roomId);
+    getMessage();
+    quickReply = QuickReplies(
+      replies: repliesList,
+      showReplies: repliesVisibility,
+      selectedRepliesTextController: myController,
+      selectedReplies: selectedRepliesList,
+      sendButtonBool: disableButton,
+    );
+    super.initState();
+    _register();
+  }
+
   @override
   Widget build(BuildContext context) {
     print('hi');
-    print('selected replies :$selectedRepliesList and value of disabledButton is $disableButton');
+    print(
+        'selected replies :$selectedRepliesList and value of disabledButton is $disableButton');
     // if(selectedReplies.split(',').toList().length>3){
     //   myController.text=selectedReplies;
     // }
@@ -137,8 +148,10 @@ class _ChatScreenState extends State<ChatScreen> {
             IconButton(
               icon: Icon(Icons.menu),
               onPressed: () {
-                repliesVisibility = !repliesVisibility;
+                print(' value of quickReply.showReplies ${quickReply.showReplies} ');
+
                 setState(() {});
+                setState(() {quickReply.showReplies = !quickReply.showReplies;});
               },
             )
           ],
@@ -210,20 +223,15 @@ class _ChatScreenState extends State<ChatScreen> {
                     icon: Icon(Icons.send),
                     disabledColor: Colors.grey,
                     color: Colors.blue,
-                    onPressed: (myController.text.isEmpty ||
-                            disableButton)
+                    onPressed: (myController.text.isEmpty || quickReply.sendButtonBool)
                         ? null
                         : sendMessage,
                   ),
                 ],
               ),
-              QuickReplies(
-                replies: repliesList,
-                showReplies: repliesVisibility,
-                selectedRepliesTextController: myController,
-                selectedReplies: selectedRepliesList,
-                sendButtonBool:disableButton,
-              ),
+              Visibility(
+                visible: quickReply.showReplies,
+                  child: quickReply),
             ],
           ),
         ),
