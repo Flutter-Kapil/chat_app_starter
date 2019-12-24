@@ -16,7 +16,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  String selectedReplies;
+  List<String> selectedRepliesList=[];
   List roomsList = [];
   FirebaseUser currentUser;
   bool isCurrentUserBool;
@@ -69,7 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  List<String> weekDays = [
+  List<String> repliesList = [
     'Monday',
     'Tuesday',
     'Wednesday',
@@ -78,11 +78,12 @@ class _ChatScreenState extends State<ChatScreen> {
     'Saturday',
     'Sunday'
   ];
-  bool optionsVisibility = false;
+  bool repliesVisibility = false;
+  bool disableButton =false;
   @override
   Widget build(BuildContext context) {
     print('hi');
-    print('selected replies :$selectedReplies');
+    print('selected replies :$selectedRepliesList and value of disabledButton is $disableButton');
     // if(selectedReplies.split(',').toList().length>3){
     //   myController.text=selectedReplies;
     // }
@@ -136,7 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
             IconButton(
               icon: Icon(Icons.menu),
               onPressed: () {
-                optionsVisibility = !optionsVisibility;
+                repliesVisibility = !repliesVisibility;
                 setState(() {});
               },
             )
@@ -210,16 +211,18 @@ class _ChatScreenState extends State<ChatScreen> {
                     disabledColor: Colors.grey,
                     color: Colors.blue,
                     onPressed: (myController.text.isEmpty ||
-                            myController.text.split(',').toList().length > 4)
+                            disableButton)
                         ? null
                         : sendMessage,
                   ),
                 ],
               ),
               QuickReplies(
-                replies: weekDays,
-                showReplies: optionsVisibility,
-                selectedRepliesText: myController,
+                replies: repliesList,
+                showReplies: repliesVisibility,
+                selectedRepliesTextController: myController,
+                selectedReplies: selectedRepliesList,
+                sendButtonBool:disableButton,
               ),
             ],
           ),
