@@ -56,10 +56,11 @@ class _ChatScreenState extends State<ChatScreen> {
       setState(() => _message = message["notification"]["title"]);
     });
   }
-  int numberOfTrue(List listOfBools){
-    int count=0;
-    for(int i=0;i<listOfBools.length;i++){
-      if(listOfBools[i]){
+
+  int numberOfTrue(List listOfBools) {
+    int count = 0;
+    for (int i = 0; i < listOfBools.length; i++) {
+      if (listOfBools[i]) {
         count++;
       }
     }
@@ -96,7 +97,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -149,7 +149,9 @@ class _ChatScreenState extends State<ChatScreen> {
               onPressed: () {
                 print(' value of repliesVisibilty $repliesVisibility ');
 
-                setState(() {repliesVisibility = !repliesVisibility;});
+                setState(() {
+                  repliesVisibility = !repliesVisibility;
+                });
               },
             )
           ],
@@ -221,18 +223,16 @@ class _ChatScreenState extends State<ChatScreen> {
                     icon: Icon(Icons.send),
                     disabledColor: Colors.grey,
                     color: Colors.blue,
-                    onPressed: (myController.text.isEmpty || quickReply.sendButtonBool)
+                    onPressed: (myController.text.isEmpty ||
+                            quickReply.selectedReplies.length > 3)
                         ? null
-                        : (){
-                      sendMessage();
-
-                        },
+                        : () {
+                            sendMessage();
+                          },
                   ),
                 ],
               ),
-              Visibility(
-                visible: repliesVisibility,
-                  child: quickReply),
+              Visibility(visible: repliesVisibility, child: quickReply),
             ],
           ),
         ),
