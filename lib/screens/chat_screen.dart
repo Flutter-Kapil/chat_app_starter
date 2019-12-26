@@ -81,15 +81,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    myController.addListener(() {
-      setState(() {});
-    });
+//    myController.addListener(() {
+//      setState(() {});
+//    });
     getCurrentUser();
     getRoomName(widget.roomId);
     getMessage();
     quickReply = QuickReplies(
       replies: repliesList,
       selectedRepliesTextController: myController,
+      notifyParent: refresh,
     );
     super.initState();
     _register();
@@ -214,6 +215,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: TextField(
                       expands: false,
                       controller: myController,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
                       autocorrect: true,
                       autofocus: false,
                       showCursor: true,
@@ -223,11 +227,13 @@ class _ChatScreenState extends State<ChatScreen> {
                     icon: Icon(Icons.send),
                     disabledColor: Colors.grey,
                     color: Colors.blue,
-                    onPressed: (myController.text.isEmpty ||
-                            quickReply.selectedReplies.length > 3)
+                    onPressed: (quickReply.selectedReplies.length > 3)
                         ? null
                         : () {
-                            sendMessage();
+                            print(
+                                'value of controller is ${myController.text.isEmpty}');
+
+                            myController.text.isNotEmpty ? sendMessage() : null;
                           },
                   ),
                 ],
@@ -238,6 +244,10 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
     );
+  }
+
+  refresh() {
+    setState(() {});
   }
 
   void sendMessage() async {

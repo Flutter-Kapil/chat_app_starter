@@ -5,22 +5,22 @@ class QuickReplies extends StatefulWidget {
   List<String> selectedReplies;
   TextEditingController selectedRepliesTextController;
   List<bool> repliesBool;
-
+  Function() notifyParent;
   QuickReplies(
       {List<String> replies,
-      TextEditingController selectedRepliesTextController}) {
+      TextEditingController selectedRepliesTextController,
+      Function() notifyParent}) {
+    this.notifyParent = notifyParent;
     this.replies = replies;
     this.selectedRepliesTextController = selectedRepliesTextController;
-    this.selectedReplies=[];
-    this.repliesBool= List.generate(replies.length, (i) => false);
+    this.selectedReplies = [];
+    this.repliesBool = List.generate(replies.length, (i) => false);
   }
   @override
   _QuickRepliesState createState() => _QuickRepliesState();
 }
 
 class _QuickRepliesState extends State<QuickReplies> {
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,6 +48,7 @@ class _QuickRepliesState extends State<QuickReplies> {
                   widget.selectedReplies.join(',');
 
               setState(() {});
+              widget.notifyParent();
               print(
                   'selected repliesText editing controller value is  :${widget.selectedReplies.join(',')}');
               print(
