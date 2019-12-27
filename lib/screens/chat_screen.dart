@@ -77,8 +77,8 @@ class _ChatScreenState extends State<ChatScreen> {
     'Sunday'
   ];
   bool repliesVisibility = false;
-  QuickReplies quickReply;
-
+//  QuickReplies quickReply;
+  List<String> options;
   @override
   void initState() {
 //    myController.addListener(() {
@@ -87,11 +87,12 @@ class _ChatScreenState extends State<ChatScreen> {
     getCurrentUser();
     getRoomName(widget.roomId);
     getMessage();
-    quickReply = QuickReplies(
-      replies: repliesList,
-      selectedRepliesTextController: myController,
-      notifyParent: refresh,
-    );
+//    quickReply = QuickReplies(
+//      ValueKey(repliesList),
+//      replies: repliesList,
+//      selectedRepliesTextController: myController,
+//      notifyParent: refresh,
+//    );
     super.initState();
     _register();
   }
@@ -154,93 +155,149 @@ class _ChatScreenState extends State<ChatScreen> {
                   repliesVisibility = !repliesVisibility;
                 });
               },
+            ),
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    child: Text('Show Food Menu'),
+                    value: ['Biryani', 'Khichdi', 'Sabzi', 'Pulav'],
+                  ),
+                  PopupMenuItem(
+                    child: Text('Show Weekdays'),
+                    value: [
+                      'Monday',
+                      'Tuesday',
+                      'Wednesday',
+                      'Thursday',
+                      'Friday',
+                      'Saturday',
+                      'Sunday'
+                    ],
+                  ),
+                  PopupMenuItem(
+                    child: Text('Close All'),
+                    value: <String>[],
+                  )
+                ];
+              },
+              onSelected: (List<String> value) {
+                print(' value of repliesVisibilty $repliesVisibility ');
+
+                setState(() {
+                  repliesVisibility = !repliesVisibility;
+                });
+                print('Selected value $value');
+                setState(() {
+                  FocusScope.of(context).unfocus();
+                  options = value.isEmpty ? null : value;
+//                  optionsWidget = QuickReplies(
+//                    ValueKey(options),
+//                    replies: options,
+//                    selectedRepliesTextController: myController,
+//                    notifyParent: refresh,
+//                  );
+                });
+              },
             )
           ],
         ),
-        body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Expanded(
-                child: StreamBuilder(
-                  stream: Firestore.instance
-                      .collection('rooms')
-                      .document(widget.roomId)
-                      .collection('messages')
-                      .orderBy('time', descending: true)
-                      .snapshots(),
-                  builder: (BuildContext context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasData) {
-                      return ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          reverse: true,
-                          itemCount: snapshot.data.documents.length,
-                          itemBuilder: (context, int index) {
-                            return ChatBubble(
-                              text: snapshot.data.documents[index].data['text'],
-                              sender:
-                                  snapshot.data.documents[index].data['sender'],
-                              isCurrentUser: currentUser.email ==
-                                  snapshot.data.documents[index].data['sender'],
-                            );
-                          });
-                    } else if (snapshot.hasError)
-                      return Text('Error: ${snapshot.error}');
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                        return Text('Select lot');
-                      case ConnectionState.waiting:
-                        return Text('Awaiting bids...');
-                      case ConnectionState.active:
-                        return Text('\$${snapshot.data}');
-                      case ConnectionState.done:
-                        return Text('\$${snapshot.data} (closed)');
-                    }
-                    return null; // unreachable
-                  },
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Expanded(
+              child: StreamBuilder(
+                stream: Firestore.instance
+                    .collection('rooms')
+                    .document(widget.roomId)
+                    .collection('messages')
+                    .orderBy('time', descending: true)
+                    .snapshots(),
+                builder: (BuildContext context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasData) {
+                    return ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        reverse: true,
+                        itemCount: snapshot.data.documents.length,
+                        itemBuilder: (context, int index) {
+                          return ChatBubble(
+                            text: snapshot.data.documents[index].data['text'],
+                            sender:
+                                snapshot.data.documents[index].data['sender'],
+                            isCurrentUser: currentUser.email ==
+                                snapshot.data.documents[index].data['sender'],
+                          );
+                        });
+                  } else if (snapshot.hasError)
+                    return Text('Error: ${snapshot.error}');
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return Text('Select lot');
+                    case ConnectionState.waiting:
+                      return Text('Awaiting bids...');
+                    case ConnectionState.active:
+                      return Text('\$${snapshot.data}');
+                    case ConnectionState.done:
+                      return Text('\$${snapshot.data} (closed)');
+                  }
+                  return null; // unreachable
+                },
+              ),
+            ),
+            Divider(
+              color: Colors.blue,
+              height: 2,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: TextField(
+                    expands: false,
+                    controller: myController,
+                    onChanged: (value) {
+                      setState(() {});
+                    },
+                    autocorrect: true,
+                    autofocus: false,
+                    showCursor: true,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  disabledColor: Colors.grey,
+                  color: Colors.blue,
+                  onPressed: (QuickReplies(
+                            ValueKey(options),
+                            replies: options,
+                            selectedRepliesTextController: myController,
+                            notifyParent: refresh,
+                          ).selectedReplies.length >
+                          3)
+                      ? null
+                      : () {
+                          print(
+                              'value of controller is ${myController.text.isEmpty}');
+
+                          myController.text.isNotEmpty ? sendMessage() : null;
+                        },
+                ),
+              ],
+            ),
+            if (options != null)
+              Container(
+                child: QuickReplies(
+                  ValueKey(options),
+                  replies: options,
+                  selectedRepliesTextController: myController,
+                  notifyParent: refresh,
                 ),
               ),
-              Divider(
-                color: Colors.blue,
-                height: 2,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    height: 40,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: TextField(
-                      expands: false,
-                      controller: myController,
-                      onChanged: (value) {
-                        setState(() {});
-                      },
-                      autocorrect: true,
-                      autofocus: false,
-                      showCursor: true,
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.send),
-                    disabledColor: Colors.grey,
-                    color: Colors.blue,
-                    onPressed: (quickReply.selectedReplies.length > 3)
-                        ? null
-                        : () {
-                            print(
-                                'value of controller is ${myController.text.isEmpty}');
-
-                            myController.text.isNotEmpty ? sendMessage() : null;
-                          },
-                  ),
-                ],
-              ),
-              Visibility(visible: repliesVisibility, child: quickReply),
-            ],
-          ),
+          ],
         ),
       ),
     );
